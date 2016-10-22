@@ -1,0 +1,130 @@
+<template>
+    <div id="index">
+        <header>
+            <div class="left">北京</div>
+            <h1><input type="text" placeholder="搜索楼盘"></h1>
+            <div></div>
+            <div class="right" @click="changeList">{{indexListType}}</div>
+            <div class="clear"></div>
+            <div class="mainnav">
+                <em></em>
+                <dl @click="showSearchInfo('searchQuyu')">
+                    <dt>区域/地铁
+                    <div class="fr"></div>
+                    </dt>
+                    <dd></dd>
+                </dl>
+                <dl @click="showSearchInfo('searchType')">
+                    <dt>类型
+                    <div class="fr"></div>
+                    </dt>
+                    <dd></dd>
+                </dl>
+                <dl @click="showSearchInfo('searchJiage')">
+                    <dt>价格
+                    <div class="fr"></div>
+                    </dt>
+                    <dd></dd>
+                </dl>
+                <router-link tag="b" to="/more-search">更多</router-link>
+            </div>
+        </header>
+        <div style=" height:92px;"></div>
+        <div class="content">
+            <transition name="fade" mode="out-in">
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
+            </transition>
+        </div>
+        <div style="height:60px;"></div>
+        <v-footer></v-footer>
+        <transition name="slide-down">
+            <component :is="currentSearchInfo" class="serch-info"></component>
+        </transition>
+    </div>
+</template>
+
+<script>
+    import {mapState, mapGetters, mapActions} from 'vuex'
+    import vFooter from 'components/footer'
+    import searchQuyu from 'components/search-quyu'
+    import searchJiage from 'components/search-jiage'
+    import searchType from 'components/search-type'
+    export default {
+        name: 'index',
+        components: {vFooter, searchQuyu, searchJiage, searchType},
+        data () {
+            return {
+                currentSearchInfo: ''
+            }
+        },
+        computed: {
+            ...mapState({
+                quYuList: state => state.base.quYuList
+            }),
+            ...mapGetters({
+                baseInfo: 'baseInfo'
+            }),
+            indexListType(){
+                if (this.$route.name == 'map') {
+                    return '列表'
+                } else {
+                    return '地图'
+                }
+            }
+        },
+        created(){
+            const _vm = this
+            router.push({path: 'map'})
+            _vm.initSearchCriteria()
+            _vm.setMapList()
+        },
+        watch: {
+            '$route' (to, from) {
+                console.log('[Leo]route chage => ', from, to)
+            }
+        },
+        methods: {
+            ...mapActions([
+                'initSearchCriteria',
+                'setMapList'
+            ]),
+            changeList(){
+                const _vm = this
+                _vm.currentSearchInfo = ''
+                switch (_vm.$route.name) {
+                    case 'map':
+                        router.push({path: 'list'})
+                        break
+                    case 'list':
+                        router.push({path: 'map'})
+                }
+            },
+            showSearchInfo(type){
+                if (this.currentSearchInfo == '')
+                    this.currentSearchInfo = type
+                else if (this.currentSearchInfo != '' && this.currentSearchInfo != type)
+                    this.currentSearchInfo = type
+                else
+                    this.currentSearchInfo = ''
+            }
+        }
+    }
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+    .content {
+        position: absolute;
+        top: 92px;
+        bottom: 60px;
+        left: 0;
+        right: 0;
+    }
+
+    .serch-info {
+        position: absolute;
+        transition: all .5s cubic-bezier(.55, 0, .1, 1);
+    }
+</style>
