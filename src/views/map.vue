@@ -9,21 +9,11 @@
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
     export default{
-        name: '',
-        components: {},
-        props: [],
+        name: 'map',
         data(){
             return {
                 map: null
             }
-        },
-        created(){
-        },
-        mounted(){
-            const _vm = this
-            _vm.$nextTick(function () {
-                _vm.init()
-            })
         },
         computed: {
             ...mapState({
@@ -36,7 +26,7 @@
         watch: {},
         methods: {
             ...mapActions([
-                //'addToBaseInfo'
+                'setMapList'
             ]),
             init(){
                 const _vm = this
@@ -47,11 +37,12 @@
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
+
+                _vm.setMapList()
+
                 _vm.$watch(function () {
                     return _vm.$store.state.base.mapList
                 }, function (newVal, oldVal) {
-                    console.log('[Leo]oldVal => ',oldVal)
-                    console.log('[Leo]newVal => ',newVal)
                     for (let item of newVal) {
                         let zuobiao = item.zuobiao.split(',')
                         _vm.addMarker(5, zuobiao)
@@ -81,6 +72,14 @@
                 });
                 marker.setMap(_vm.map);
             }
+        },
+        created(){
+        },
+        mounted(){
+            const _vm = this
+            _vm.$nextTick(function () {
+                _vm.init()
+            })
         }
     }
 </script>

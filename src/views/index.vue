@@ -61,7 +61,7 @@
         },
         computed: {
             ...mapState({
-                quYuList: state => state.base.quYuList
+                //quYuList: state => state.base.quYuList
             }),
             ...mapGetters({
                 baseInfo: 'baseInfo'
@@ -78,7 +78,6 @@
             const _vm = this
             router.push({path: 'map'})
             _vm.initSearchCriteria()
-            _vm.setMapList()
         },
         watch: {
             '$route' (to, from) {
@@ -87,8 +86,7 @@
         },
         methods: {
             ...mapActions([
-                'initSearchCriteria',
-                'setMapList'
+                'initSearchCriteria'
             ]),
             changeList(){
                 const _vm = this

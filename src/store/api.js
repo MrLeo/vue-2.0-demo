@@ -16,7 +16,7 @@ export default {
      */
     getQuYuList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'quyu_listapi.php', {sub}, res=> resolve(JSON.parse(res)))
+            $.post(host + 'quyu_listapi.php', {sub}, res=> resolve(JSON.parse(res)))
         })
     },
     /**
@@ -25,7 +25,7 @@ export default {
      */
     getDiTieList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'ditie_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'ditie_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -34,7 +34,7 @@ export default {
      */
     getTeSeList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'tese_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'tese_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -43,7 +43,7 @@ export default {
      */
     getHuXingList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'huxing_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'huxing_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -52,7 +52,7 @@ export default {
      */
     getHuanXianList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'huanxian_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'huanxian_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -61,7 +61,7 @@ export default {
      */
     getTypeList(sub){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'type_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'type_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -72,7 +72,7 @@ export default {
      */
     getTypeJianSuo(sub, page, ...arg){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'type_jiansuoapi.php', {sub, page, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'type_jiansuoapi.php', {sub, page, ...arg}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -82,7 +82,7 @@ export default {
      */
     getRoad(sub, ...arg){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'roadapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'roadapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -92,7 +92,7 @@ export default {
      */
     getMap(sub, ...arg){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'mapapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'mapapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -102,7 +102,7 @@ export default {
      */
     getHuXing(sub, upd){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'huxing_api.php', {sub, upd}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'huxing_api.php', {sub, upd}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -113,7 +113,7 @@ export default {
      */
     getUserBrowsingHistory(sub, sid, uid){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/browsinghistoryapi.php', {sub, sid, uid}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/browsinghistoryapi.php', {sub, sid, uid}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -127,7 +127,7 @@ export default {
      */
     getSeeorder(sub, suser, sphone, sid, g_uid, time){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/seeorderapi.php', {sub, suser, sphone, sid, g_uid, time}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/seeorderapi.php', {sub, suser, sphone, sid, g_uid, time}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -139,7 +139,7 @@ export default {
      */
     clickLick(sub, product_id, user_id, p_type = 3){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/click_like.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/click_like.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -151,7 +151,7 @@ export default {
      */
     share(sub, product_id, user_id, p_type){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/share.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/share.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -163,7 +163,7 @@ export default {
      */
     collectionInsert(sub, product_id, user_id, p_type){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/collection_insert.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/collection_insert.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -175,7 +175,7 @@ export default {
      */
     productUserAttr(sub, p_id, user_id, p_type = 3){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'user/product_user_attr.php', {sub, p_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/product_user_attr.php', {sub, p_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -185,7 +185,7 @@ export default {
      */
     getZhouBianTuiJian(sub, id){
         return new Promise(function (resolve, reject) {
-            $.get(host + 'zhoubiantj.php', {sub, id}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'zhoubiantj.php', {sub, id}, res=>resolve(JSON.parse(res)))
         })
     }
 }
