@@ -70,9 +70,11 @@ export default {
      * @param page 分页
      * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
      */
-    getTypeJianSuo(sub, page, ...arg){
+    getTypeJianSuo(info){
+        info.sub ? '' : info.sub = ''
+        info.page ? '' : info.page
         return new Promise(function (resolve, reject) {
-            $.post(host + 'type_jiansuoapi.php', {sub, page, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -80,9 +82,10 @@ export default {
      * @param sub
      * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
      */
-    getRoad(sub, ...arg){
+    getRoad(info){
+        info.sub ? '' : info.sub = ''
         return new Promise(function (resolve, reject) {
-            $.post(host + 'roadapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -90,9 +93,10 @@ export default {
      * @param sub
      * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
      */
-    getMap(sub, ...arg){
+    getMap(info){
+        info.sub ? '' : info.sub = ''
         return new Promise(function (resolve, reject) {
-            $.post(host + 'mapapi.php', {sub, ...arg}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
         })
     },
     /**
@@ -163,7 +167,9 @@ export default {
      */
     collectionInsert(sub, product_id, user_id, p_type){
         return new Promise(function (resolve, reject) {
-            $.post(host + 'user/collection_insert.php', {sub, product_id, user_id, p_type}, res=>resolve(JSON.parse(res)))
+            $.post(host + 'user/collection_insert.php', {
+                sub, product_id, user_id, p_type
+            }, res=>resolve(JSON.parse(res)))
         })
     },
     /**

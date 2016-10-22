@@ -28,7 +28,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        transition: all .5s cubic-bezier(.55, 0, .1, 1);
+        transition: all .3s cubic-bezier(.55, 0, .1, 1);
     }
 
     /*fade动画 begin*/
@@ -68,6 +68,6 @@
 
     /*slide-down 进入的结束状态 ＆ 离开的开始状态*/
     .slide-down-enter-active, .slide-down-leave {
-        transition: all .5s ease;
+        transition: all .3s ease;
     }
 </style>

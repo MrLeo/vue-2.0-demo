@@ -8,19 +8,12 @@
         <div class="box">
             <div class="navlist2 no">
                 <ul>
-                    <li>不限</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
-                    <li>高端豪宅</li>
-                    <li>花园洋房</li>
+                    <li @click="selectType('')" :class="{hover:selected.type==''}">不限</li>
+                    <li v-for="item in typeList"
+                        @click="selectType(item.id)"
+                        :class="{hover:selected.type==item.id}">
+                        {{item.t_name}}
+                    </li>
                 </ul>
             </div>
         </div>
@@ -29,27 +22,34 @@
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
     export default{
-        name: '',
-        components: {},
+        name: 'search-type',
         props: [],
         data(){
-            return {}
-        },
-        created(){
-        },
-        mounted(){
+            return {
+                selected: {
+                    type: ''
+                }
+            }
         },
         computed: {
+            ...mapState({
+                typeList: state=>state.base.typeList
+            }),
             ...mapGetters({
-                baseInfo: 'baseInfo'
+                //baseInfo: 'baseInfo'
             })
         },
-        watch: {},
-        methods: mapActions([
-            //'addToBaseInfo'
-        ])
+        methods: {
+            ...mapActions([
+                'setMapList'
+            ]),
+            selectType(type){
+                this.selected.type = type
+                this.setMapList(this.$store.state.base.indexSearch)
+            }
+        }
     }
 </script>
 <style scoped>
-
+    .navlist2 li.hover{ background:#e2e2e2;}
 </style>

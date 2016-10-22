@@ -15,12 +15,20 @@
                 </div>
                 <div class="right">
                     <ol v-show="leftQuery.quyu">
-                        <li class="hover">不限</li>
-                        <li v-for="item in baseInfo.quYuList" :id="item.id">{{item.t_name}}</li>
+                        <li @click="selectQuyu('')" :class="{hover:selected.quyu==''}">不限</li>
+                        <li v-for="item in baseInfo.quYuList"
+                            :id="item.id"
+                            @click="selectQuyu(item.id)"
+                            :class="{hover:selected.quyu==item.id}">{{item.t_name}}
+                        </li>
                     </ol>
                     <ol v-show="leftQuery.ditie">
-                        <li class="hover">不限</li>
-                        <li v-for="item in baseInfo.diTieList" :id="item.id">{{item.t_name}}</li>
+                        <li @click="selectDitie('')" :class="{hover:selected.ditie==''}">不限</li>
+                        <li v-for="item in baseInfo.diTieList"
+                            :id="item.id"
+                            @click="selectDitie(item.id)"
+                            :class="{hover:selected.ditie==item.id}">{{item.t_name}}
+                        </li>
                     </ol>
                 </div>
             </div>
@@ -30,39 +38,45 @@
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
     export default{
-        name: '',
-        components: {},
+        name: 'search-quyu',
         props: [],
         data(){
             return {
                 leftQuery: {
                     quyu: true,
                     ditie: false
+                },
+                selected: {
+                    quyu: '',
+                    ditie: ''
                 }
             }
-        },
-        created(){
-        },
-        mounted(){
         },
         computed: {
             ...mapGetters({
                 baseInfo: 'baseInfo'
             })
         },
-        watch: {},
         methods: {
             ...mapActions([
-                //'addToBaseInfo'
+                'setMapList'
             ]),
             chageLeft(type){
                 for (let query in this.leftQuery)
                     this.leftQuery[query] = false
                 this.leftQuery[type] = true
+            },
+            selectQuyu(type){
+                this.selected.quyu = type
+                this.setMapList(this.$store.state.base.indexSearch)
+            },
+            selectDitie(type){
+                this.selected.ditie = type
+                this.setMapList(this.$store.state.base.indexSearch)
             }
         }
     }
 </script>
 <style scoped>
-
+    .navlist2 li.hover{ background:#e2e2e2;}
 </style>

@@ -10,7 +10,7 @@ header h1 input { border:0; width:100%; border-radius:5px; height:30px; backgrou
 
 
 .mainnav{ height:40px; background:#f4f2f3; border-bottom:1px solid #ddd; color:#333; font-size:12px; line-height:40px; overflow:hidden}
-.mainnav>em { float:left; width:20px; height:20px; background:url(../images/index2.jpg); background-size:100%; margin-left:5px; margin-top:10px;}
+.mainnav>em { float: left;width: 30px;height: 100%;background: url(../images/index2.jpg) center / 50% no-repeat;}
 .mainnav>dl { float:left; width:25%;}
 .mainnav>dl dt { border-right:1px solid #ddd; padding:0 10px; position:relative}
 .mainnav>dl dt .fr{ border:4px solid transparent; border-top-color:#333; position:absolute; right:10px; top:18px;}
@@ -114,12 +114,12 @@ header h1 input { border:0; width:100%; border-radius:5px; height:30px; backgrou
 .navlist1 .left li.hover{ background:#fff;}
 .navlist1 .right{ padding-left:50%;overflow-y:auto; height:300px;}
 .navlist1 .right li{ margin-right:10px;}
-.navlist1 .right li:hover { color:#fc6561; background:url(../images/aa.png) no-repeat right; background-size:20px;}
+.navlist1 .right li:hover,.navlist1 .right li.hover { color:#fc6561; background:url(../images/aa.png) no-repeat right; background-size:20px;}
 
 
 .navlist2{ line-height:32px; height:300px; overflow-y:auto; text-align:center;}
 .navlist2 li { border-bottom:1px solid #e2e2e2;}
-.navlist2 li:hover{ background:#e2e2e2;}
+.navlist2 li:hover,.navlist2 li.hover{ background:#e2e2e2;}
 .navlist2 h6{ background:#f7f7f7;}
 .navlist2 h6 input{ height:20px; background:#fff; width:30px; border:1px solid #e2e2e2; margin-left:5px; font-size:12px;}
 .navlist2 h6 button{ background:#fc6561; color:#fff; height:20px; border:0; margin-left:5px; font-size:12px;}

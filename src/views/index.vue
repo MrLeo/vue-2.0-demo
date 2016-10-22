@@ -7,7 +7,7 @@
             <div class="right" @click="changeList">{{indexListType}}</div>
             <div class="clear"></div>
             <div class="mainnav">
-                <em></em>
+                <em @click="resetSearchInfo"></em>
                 <dl @click="showSearchInfo('searchQuyu')">
                     <dt>区域/地铁
                     <div class="fr"></div>
@@ -47,6 +47,7 @@
 
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
+    import * as types from '../store/mutation-types'
     import vFooter from 'components/footer'
     import searchQuyu from 'components/search-quyu'
     import searchJiage from 'components/search-jiage'
@@ -56,7 +57,10 @@
         components: {vFooter, searchQuyu, searchJiage, searchType},
         data () {
             return {
-                currentSearchInfo: ''
+                currentSearchInfo: '',
+                selected: {
+                    keyword: ''
+                }
             }
         },
         computed: {
@@ -64,7 +68,7 @@
                 //quYuList: state => state.base.quYuList
             }),
             ...mapGetters({
-                baseInfo: 'baseInfo'
+                //baseInfo: 'baseInfo'
             }),
             indexListType(){
                 if (this.$route.name == 'map') {
@@ -74,11 +78,6 @@
                 }
             }
         },
-        created(){
-            const _vm = this
-            router.push({path: 'map'})
-            _vm.initSearchCriteria()
-        },
         watch: {
             '$route' (to, from) {
                 console.log('[Leo]route chage => ', from, to)
@@ -86,7 +85,7 @@
         },
         methods: {
             ...mapActions([
-                'initSearchCriteria'
+                'initIndexSearchCriteria'
             ]),
             changeList(){
                 const _vm = this
@@ -106,7 +105,15 @@
                     this.currentSearchInfo = type
                 else
                     this.currentSearchInfo = ''
+            },
+            resetSearchInfo(){
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, {})
             }
+        },
+        created(){
+            const _vm = this
+            router.push({path: 'map'})
+            _vm.initIndexSearchCriteria()
         }
     }
 </script>
@@ -124,5 +131,12 @@
     .serch-info {
         position: absolute;
         transition: all .5s cubic-bezier(.55, 0, .1, 1);
+    }
+
+    .mainnav > em {
+        float: left;
+        width: 30px;
+        height: 100%;
+        background: url(/static/images/index2.jpg) center / 50% no-repeat;
     }
 </style>
