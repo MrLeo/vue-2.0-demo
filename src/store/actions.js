@@ -13,7 +13,7 @@ import api from './api'
  * @param state
  * @param info
  */
-export const initSearchCriteria = ({commit,state}, info)=> {
+export const initSearchCriteria = ({commit, state}, info)=> {
     //区域
     api.getQuYuList(info || '').then(res=> {
         if (res.returnCode == '00')
@@ -49,8 +49,9 @@ export const initSearchCriteria = ({commit,state}, info)=> {
  * @param state
  * @param info
  */
-export const setMapList=({commit,state},info)=>{
-    api.getMap(info || '').then(res=> {
+export const setMapList = ({commit, state}, info)=> {
+    let promise = api.getMap(info || '')
+    promise.then(res=> {
         if (res.returnCode == '00')
             commit(types.SET_MAP_LIST, res.list || {})
         else
@@ -58,4 +59,5 @@ export const setMapList=({commit,state},info)=>{
     }).catch(error=> {
         console.warn('[Leo]getMap => ', error)
     })
+    return promise
 }

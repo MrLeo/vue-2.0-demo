@@ -38,18 +38,24 @@
                     _vm.map.addControl(new AMap.ToolBar())
                 })
 
-                _vm.setMapList()
-
-                _vm.$watch(function () {
-                    return _vm.$store.state.base.mapList
-                }, function (newVal, oldVal) {
-                    for (let item of newVal) {
-                        let zuobiao = item.zuobiao.split(',')
-                        _vm.addMarker(5, zuobiao)
-                    }
+                let maps = _vm.setMapList()
+                maps.then(res=> {
+                    _vm.$store.state.base.mapList.filter(function (item) {
+                        const info = item[1]
+                        item.zuobiao && _vm.addMarker(info, item.zuobiao.split(','))
+                    })
                 })
+
+                //_vm.$store.watch(function (state) {
+                //    return state.base.mapList
+                //}, function (val) {
+                //    val.filter(item=> {
+                //        const info = item[1]
+                //        item.zuobiao && _vm.addMarker(info, item.zuobiao.split(','))
+                //    })
+                //})
             },
-            addMarker(count, position){
+            addMarker(info, position){
                 const _vm = this
 
                 // 自定义点标记内容
@@ -62,7 +68,7 @@
                 // 点标记中的文本
                 var markerSpan = document.createElement("span");
                 markerSpan.className = 'map-marker';
-                markerSpan.innerHTML = count || "0";
+                markerSpan.innerHTML = info || "0";
                 markerContent.appendChild(markerSpan);
 
                 let marker = new AMap.Marker({
