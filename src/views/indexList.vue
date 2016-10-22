@@ -6,7 +6,7 @@
 <template>
     <div class="indexlist">
         <dl>
-            <dt><img src="images/index3.jpg"></dt>
+            <dt><img src="/static/images/index3.jpg"></dt>
             <dd>
                 <h3>美泉园墅</h3>
                 <h6>住宅－板房</h6>
@@ -16,7 +16,7 @@
             </dd>
         </dl>
         <dl>
-            <dt><img src="images/index4.jpg"></dt>
+            <dt><img src="/static/images/index4.jpg"></dt>
             <dd>
                 <h3>美泉园墅</h3>
                 <h6>住宅－板房</h6>
