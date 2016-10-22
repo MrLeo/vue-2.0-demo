@@ -7,9 +7,7 @@
     <div id="search">
 
         <header>
-            <div class="left">
-                〈
-            </div>
+            <router-link class="left" to="/map">&nbsp;〈&nbsp;</router-link>
             <h1>更多</h1>
             <div class="right"></div>
             <div class="clear"></div>
