@@ -30,15 +30,16 @@
             ]),
             init(){
                 const _vm = this
+                let zoom = 8
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],
-                    zoom: 8
+                    zoom: zoom
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
                 let markers = []
-                let maps = _vm.setMapList()
+                let maps = _vm.setMapList(zoom)
                 //                maps.then(res=> {
                 //                    _vm.$store.state.base.mapList.filter(function (item) {
                 //                        const info = item[1]
@@ -54,7 +55,9 @@
                     markers && _vm.map.remove(markers)
                     markers = []
                     val.filter(item=> {
-                        const info = item[1]
+                        let count = 'count'
+                        if (zoom > 8)count = 1
+                        const info = `<p>${item.t_name}</p><p>${item[count]}</p>`
                         if (item.zuobiao) {
                             let marker = _vm.createMarker(info, {position: item.zuobiao.split(',')})
                             markers.push(marker)
@@ -93,7 +96,7 @@
                 markerImg.src = "http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png";
                 markerContent.appendChild(markerImg);
                 // 点标记中的文本
-                var markerSpan = document.createElement("span");
+                var markerSpan = document.createElement("p");
                 markerSpan.className = 'map-marker';
                 markerSpan.innerHTML = markerInfo || "0";
                 markerContent.appendChild(markerSpan);
@@ -140,13 +143,26 @@
         position: absolute;
         top: 0px;
         left: -13px;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background-color: red;
         text-align: center;
         color: #fff;
-        line-height: 40px;
         font-family: "Microsoft YaHei UI", "微软雅黑", Verdana, sans-serif;
+        overflow: hidden;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        flex-direction: column;
     }
 </style>

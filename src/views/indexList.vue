@@ -5,69 +5,52 @@
 */
 <template>
     <div class="indexlist">
-        <dl>
-            <dt><img src="/static/images/index3.jpg"></dt>
+        <dl v-for="item in typeJianSuo">
+            <dt :style="{
+                backgroundImage:'url(http://www.loushijie.cn/'+item.p_url+')',
+            }"><!--<img :src="'http://www.loushijie.cn/'+item.p_url">--></dt>
             <dd>
-                <h3>美泉园墅</h3>
-                <h6>住宅－板房</h6>
-                <h4>香堤楼盘位于北京东燕郊燕顺路北侧…</h4>
-                <h5><span>学区房</span></h5>
-                <em>100000元/平</em>
-            </dd>
-        </dl>
-        <dl>
-            <dt><img src="/static/images/index4.jpg"></dt>
-            <dd>
-                <h3>美泉园墅</h3>
-                <h6>住宅－板房</h6>
-                <h4>香堤楼盘位于北京东燕郊燕顺路北侧…</h4>
-                <h5><span>不限购</span></h5>
-                <em>待定</em>
-            </dd>
-        </dl>
-        <dl>
-            <dt><img src="/static/images/index5.jpg"></dt>
-            <dd>
-                <h3>美泉园墅</h3>
-                <h6>住宅－板房</h6>
-                <h4>香堤楼盘位于北京东燕郊燕顺路北侧…</h4>
-                <em>100000元/平</em>
-            </dd>
-        </dl>
-        <dl>
-            <dt><img src="/static/images/index3.jpg"></dt>
-            <dd>
-                <h3>美泉园墅</h3>
-                <h6>住宅－板房</h6>
-                <h4>香堤楼盘位于北京东燕郊燕顺路北侧…</h4>
-                <h5><span>学区房</span></h5>
-                <em>100000元/平</em>
+                <h3>{{item.p_name}}</h3>
+                <h6>{{item.t_name}}</h6>
+                <h4>{{item.adds}}</h4>
+                <h5><span v-if="item.n_name">{{item.n_name}}</span></h5>
+                <em>{{item.jiage}}</em>
             </dd>
         </dl>
     </div>
 </template>
 <script>
-    import {mapState, mapGetters, mapActions} from 'vuex'
+    import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
     export default{
-        name: 'map',
+        name: 'list',
         data(){
             return {}
         },
         computed: {
-            ...mapGetters({
-                //baseInfo: 'baseInfo'
-            })
+            ...mapState({
+                typeJianSuo: state=>state.base.typeJianSuo
+            }),
+            ...mapGetters({})
         },
         watch: {},
-        methods: mapActions([
-            //'addToBaseInfo'
-        ]),
+        methods: {
+            ...mapMutations({}),
+            ...mapActions([
+                'setTypeJianSuo'
+            ])
+            //TODO:分页，上拉加载更多
+        },
         created(){
+            const _vm = this
+            _vm.setTypeJianSuo()
         },
         mounted(){
         }
     }
 </script>
 <style scoped>
-
+    .indexlist dt {
+        background-position: center;
+        background-size: cover;
+    }
 </style>

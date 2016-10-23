@@ -80,8 +80,6 @@
         },
         watch: {
             '$route' (to, from) {
-                console.log('[Leo]route change from=> ', from)
-                console.log('[Leo]route change to => ', to)
             },
             'selected.keyword'(){
                 this.resetSearchInfo()
@@ -145,6 +143,6 @@
         float: left;
         width: 30px;
         height: 100%;
-        background: url(/static/images/index2.jpg) center / 50% no-repeat;
+        background: url('../../static/images/index2.jpg') center / 50% no-repeat;
     }
 </style>

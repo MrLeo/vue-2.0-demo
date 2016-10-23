@@ -85,7 +85,7 @@ export const initMoreSearchCriteria = ({commit, state}, info)=> {
  * @param state
  * @param info
  */
-export const setMapList = ({commit, state})=> {
+export const setMapList = ({commit, state}, zoom)=> {
     const info = {}
     info.sub = state.base.indexSearch.sub || ''
     info.quyu = state.base.indexSearch.quyu || ''
@@ -98,14 +98,57 @@ export const setMapList = ({commit, state})=> {
     info.keyword = state.base.indexSearch.keyword || ''
     info.fujin = state.base.indexSearch.fujin || ''
     info.dqzuobiao = state.base.indexSearch.zuobiao || ''
-    let promise = api.getMap(info)
+
+    let promise = null
+    if (zoom <= 8) {
+        promise = api.getRoad(info)
+    } else {
+        promise = api.getMap(info)
+    }
+
     promise.then(res=> {
+        console.log('[Leo]setMapList => ', res)
         if (res.returnCode == '00')
             commit(types.SET_MAP_LIST, res.list || [])
         else
             console.log('[Leo]getMap => ', res.messageInfo)
     }).catch(error=> {
         console.warn('[Leo]getMap => ', error)
+    })
+    return promise
+}
+
+/**
+ * 设置更多列表
+ * @param commit
+ * @param state
+ * @param info
+ */
+export const setTypeJianSuo = ({commit, state})=> {
+    const info = {}
+    info.sub = state.base.indexSearch.sub || ''
+    info.quyu = state.base.indexSearch.quyu || ''
+    info.ditie = state.base.indexSearch.ditie || ''
+    info.huanxian = state.base.indexSearch.huanxian || ''
+    info.p_type = state.base.indexSearch.type || ''
+    info.jiage = state.base.indexSearch.jiage || ''
+    info.tese = state.base.indexSearch.tese || ''
+    info.jushi = state.base.indexSearch.huxing || ''
+    info.keyword = state.base.indexSearch.keyword || ''
+    info.fujin = state.base.indexSearch.fujin || ''
+    info.dqzuobiao = state.base.indexSearch.zuobiao || ''
+    info.page = state.base.indexSearch.listPage || 1
+
+    let promise = api.getTypeJianSuo(info)
+
+    promise.then(res=> {
+        console.log('[Leo]setTypeJianSuo => ', res)
+        if (res.returnCode == '00')
+            commit(types.SET_TYPE_JIAN_SUO, res.list || [])
+        else
+            console.log('[Leo]setTypeJianSuo => ', res.messageInfo)
+    }).catch(error=> {
+        console.warn('[Leo]setTypeJianSuo => ', error)
     })
     return promise
 }

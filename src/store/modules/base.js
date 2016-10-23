@@ -20,7 +20,8 @@ const state = {
     teseList: [],
     huxingList: [],
     huanxianList: [],
-    mapList: []
+    mapList: [],
+    typeJianSuo: []
 }
 
 //注册事件，提交(commit)状态改变
@@ -50,6 +51,9 @@ const mutations = {
     },
     [types.SET_MAP_LIST](state, list){
         Vue.set(state, 'mapList', list)
+    },
+    [types.SET_TYPE_JIAN_SUO](state, list){
+        Vue.set(state, 'typeJianSuo', list)
     },
     [types.SET_TESE_LIST](state, list){
         Vue.set(state, 'teseList', list)
