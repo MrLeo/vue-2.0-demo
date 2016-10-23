@@ -6,6 +6,7 @@
  */
 
 import $ from 'jquery'
+import Fetch from '../utils/Fetch'
 
 const host = 'http://loushijie.cn/api/'
 
@@ -18,6 +19,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'quyu_listapi.php', {sub}, res=> resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'quyu_listapi.php?sub=' + sub)
     },
     /**
      * 2.地铁
@@ -27,6 +29,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'ditie_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'ditie_listapi.php?sub=' + sub)
     },
     /**
      * 3.特色
@@ -36,6 +39,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'tese_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'tese_listapi.php?sub=' + sub)
     },
     /**
      * 4.户型
@@ -45,6 +49,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'huxing_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'huxing_listapi.php?sub=' + sub)
     },
     /**
      * 5，环线
@@ -54,6 +59,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'huanxian_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'huanxian_listapi.php?sub=' + sub)
     },
     /**
      * 6.类型
@@ -63,6 +69,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'type_listapi.php', {sub}, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'type_listapi.php?sub=' + sub)
     },
     /**
      * 7.更多列表
@@ -76,6 +83,10 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'type_jiansuoapi.php',{
+        //    method:'PSOT',
+        //    body:JSON.stringify(info)
+        //})
     },
     /**
      * 8.首页区域数据（区域）
@@ -89,6 +100,10 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
         })
+        //return Fetch(host + 'roadapi.php',{
+        //    method:'POST',
+        //    body:JSON.stringify(info)
+        //})
     },
     /**
      * 9.首页地图+分类检索

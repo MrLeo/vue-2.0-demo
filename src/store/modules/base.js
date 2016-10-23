@@ -28,7 +28,6 @@ const state = {
 //必须是《同步》事务
 const mutations = {
     [types.SET_INDEX_SEARCH_INFO](state, info){
-        console.log('[Leo]SET_INDEX_SEARCH_INFO => ', JSON.stringify(info))
         //基础查询条件
         info.keyword || info.keyword == '' ? state.indexSearch.keyword = info.keyword : ''
         info.quyu || info.quyu == '' ? state.indexSearch.quyu = info.quyu : ''

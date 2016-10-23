@@ -112,7 +112,6 @@
                 console.log('[Leo]选好了 => ', JSON.stringify(this.selected))
                 this.setIndexSearchInfo(this.selected)
                 //router.go(-1)
-                console.log('[Leo]this.$route => ',this.$route)
             }
         },
         created(){

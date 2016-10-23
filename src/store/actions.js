@@ -100,11 +100,11 @@ export const setMapList = ({commit, state}, zoom)=> {
     info.dqzuobiao = state.base.indexSearch.zuobiao || ''
 
     let promise = null
-    if (!zoom)zoom = 8
-    if (zoom <= 8) {
-        promise = api.getRoad(info)
-    } else {
+    if (!zoom)zoom = 9
+    if (zoom > 13) {
         promise = api.getMap(info)
+    } else {
+        promise = api.getRoad(info)
     }
 
     promise.then(res=> {

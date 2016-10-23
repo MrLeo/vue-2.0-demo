@@ -32,7 +32,7 @@
                 const _vm = this
                 let zoom = 9
                 _vm.map = new AMap.Map('map', {
-                    center: [39.911940136336277, 116.40602523623816],
+                    center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
                     zoom: zoom
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
@@ -56,7 +56,7 @@
                     markers = []
                     val.filter(item=> {
                         let count = 'count'
-                        if (zoom > 8)count = 1
+                        if (zoom > 13)count = 1
                         const info = `<p>${item.t_name}</p><p>${item[count]}</p>`
                         if (item.zuobiao) {
                             let marker = _vm.createMarker(info, {position: item.zuobiao.split(',')})
@@ -111,7 +111,7 @@
                     //title:data.name,
                     //offset: new AMap.Pixel(-30, 5),
                     //zIndex: data.count
-                    position: data.position || [39.911940136336277, 116.40602523623816]
+                    position: data.position || [116.398075, 39.908149]//[39.911940136336277, 116.40602523623816]
                 });
                 marker.subMarkers = [];
                 if (!hide) {
