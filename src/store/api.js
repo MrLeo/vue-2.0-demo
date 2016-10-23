@@ -66,9 +66,9 @@ export default {
     },
     /**
      * 7.更多列表
-     * @param sub
-     * @param page 分页
-     * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
+     * @param info
+     * <必选>: sub page（分页）
+     * <可选>: quyu（区域的id） ditie（地铁的id） huanxian（环线的id） p_type（类型的id） jiage（价格是传最大值 1万-1.5万 是传最大值 15000 8万以上是80001） tese（特色的id） jushi （户型的id）keyword（关键字） fujin（5千米 传1 10千米传2） dqzuobiao(当前坐标 传当前的地理位置 119.11111,35.1111)
      */
     getTypeJianSuo(info){
         info.sub ? '' : info.sub = ''
@@ -79,8 +79,10 @@ export default {
     },
     /**
      * 8.首页区域数据（区域）
-     * @param sub
-     * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
+     * @param info
+     * <必选>: sub
+     * <可选>: quyu（区域的id） ditie（地铁的id） huanxian（环线的id） p_type（类型的id） jiage（价格是传最大值 1万-1.5万 是传最大值 15000 8万以上是80001） tese（特色的id） jushi （户型的id）keyword（关键字） fujin（5千米 传1 10千米传2） dqzuobiao(当前坐标 传当前的地理位置 119.11111,35.1111)
+     * 地图一级覆盖物
      */
     getRoad(info){
         info.sub ? '' : info.sub = ''
@@ -90,8 +92,10 @@ export default {
     },
     /**
      * 9.首页地图+分类检索
-     * @param sub
-     * @param arg 可选：quyu ditie huanxian p_type jiage tese jushi keyword fujin（5千米 传1 10千米传2） dqzuobiao(传对应的id)
+     * @param info
+     * <必选>: sub
+     * <可选>: quyu（区域的id） ditie（地铁的id） huanxian（环线的id） p_type（类型的id） jiage（价格是传最大值 1万-1.5万 是传最大值 15000 8万以上是80001） tese（特色的id） jushi （户型的id）keyword（关键字） fujin（5千米 传1 10千米传2） dqzuobiao(当前坐标 传当前的地理位置 119.11111,35.1111)
+     * 筛选时、点击地图一级覆盖物时、地图缩放级别到14左右的时候调用
      */
     getMap(info){
         info.sub ? '' : info.sub = ''

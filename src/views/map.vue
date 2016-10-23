@@ -30,9 +30,9 @@
             ]),
             init(){
                 const _vm = this
-                let zoom = 8
+                let zoom = 9
                 _vm.map = new AMap.Map('map', {
-                    center: [116.398075, 39.908149],
+                    center: [39.911940136336277, 116.40602523623816],
                     zoom: zoom
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
@@ -62,7 +62,11 @@
                             let marker = _vm.createMarker(info, {position: item.zuobiao.split(',')})
                             markers.push(marker)
 
-                            //TODO：为marker绑定交互事件
+                            //TODO：为marker绑定交互事件：①显示二级覆盖物；②进入详情页
+                            //绑定p_name jiage 。
+                            //项目点击到详情页需要id，zuobian，tel，jiage字段
+                            //h5/view/news_info.php     咨询详情
+                            //h5/view/product_info.php 项目详情
                             //当Marker点被点击的时候，我们将显示其下级的Marker标记，setFitView方法用来将地图调整到合适的范围来显示我们需要展示的markers。
                             //                            var _onClick = function (e) {
                             //                                if (e.target.subMarkers && e.target.subMarkers.length) {
@@ -107,7 +111,7 @@
                     //title:data.name,
                     //offset: new AMap.Pixel(-30, 5),
                     //zIndex: data.count
-                    position: data.position || [116.398075, 39.908149]
+                    position: data.position || [39.911940136336277, 116.40602523623816]
                 });
                 marker.subMarkers = [];
                 if (!hide) {

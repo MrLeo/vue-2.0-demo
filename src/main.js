@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 import * as filters from './filters'
 
-Vue.config.devtools=true
+Vue.config.devtools = true//TODO：开发阶段使用
 
 //Vue.use(VueResource)
 //Vue.use(VueRouter)

@@ -53,12 +53,13 @@
                 'setMapList'
             ]),
             selectJiage(type){
+                //TODO：jiage（价格是传最大值 1万-1.5万 是传最大值 15000 8万以上是80001）
                 this.selected.jiage = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.setMapList()
             },
             inputJiage(){
-                this.selected.jiage = this.min + '-' + this.max
+                this.selected.jiage = this.max
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.setMapList()
             }

@@ -1,6 +1,8 @@
-# Vue 2.0
+# Vue 2.0 demo
 
 > A Vue.js 2.0 project
+>
+> [demo 预览地址：http://vue2-demo.xuebin.me/dist/](http://vue2-demo.xuebin.me/dist/)
 
 ## Build Setup
 
