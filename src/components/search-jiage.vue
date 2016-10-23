@@ -28,6 +28,7 @@
 </template>
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
+    import * as types from '../store/mutation-types'
     export default{
         name: 'search-jiage',
         data(){
@@ -50,11 +51,13 @@
             ]),
             selectJiage(type){
                 this.selected.jiage = type
-                this.setMapList(this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             },
             inputJiage(){
                 this.selected.jiage = this.min + '-' + this.max
-                this.setMapList(this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             }
         }
     }

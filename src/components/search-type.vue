@@ -21,6 +21,7 @@
 </template>
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
+    import * as types from '../store/mutation-types'
     export default{
         name: 'search-type',
         props: [],
@@ -45,7 +46,8 @@
             ]),
             selectType(type){
                 this.selected.type = type
-                this.setMapList(this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             }
         }
     }

@@ -37,6 +37,7 @@
 </template>
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
+    import * as types from '../store/mutation-types'
     export default{
         name: 'search-quyu',
         props: [],
@@ -68,15 +69,19 @@
             },
             selectQuyu(type){
                 this.selected.quyu = type
-                this.setMapList(this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             },
             selectDitie(type){
                 this.selected.ditie = type
-                this.setMapList(this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             }
         }
     }
 </script>
 <style scoped>
-    .navlist2 li.hover{ background:#e2e2e2;}
+    .navlist2 li.hover {
+        background: #e2e2e2;
+    }
 </style>
