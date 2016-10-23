@@ -68,11 +68,11 @@
             },
             selectQuyu(type){
                 this.selected.quyu = type
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList(this.selected)
             },
             selectDitie(type){
                 this.selected.ditie = type
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList(this.selected)
             }
         }
     }

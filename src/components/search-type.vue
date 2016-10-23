@@ -45,7 +45,7 @@
             ]),
             selectType(type){
                 this.selected.type = type
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList(this.selected)
             }
         }
     }

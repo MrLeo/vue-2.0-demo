@@ -53,10 +53,6 @@
         data(){
             return {}
         },
-        created(){
-        },
-        mounted(){
-        },
         computed: {
             ...mapGetters({
                 //baseInfo: 'baseInfo'
@@ -65,7 +61,11 @@
         watch: {},
         methods: mapActions([
             //'addToBaseInfo'
-        ])
+        ]),
+        created(){
+        },
+        mounted(){
+        }
     }
 </script>
 <style scoped>

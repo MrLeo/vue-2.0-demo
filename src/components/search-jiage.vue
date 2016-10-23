@@ -50,11 +50,11 @@
             ]),
             selectJiage(type){
                 this.selected.jiage = type
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList(this.selected)
             },
             inputJiage(){
                 this.selected.jiage = this.min + '-' + this.max
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList(this.selected)
             }
         }
     }
