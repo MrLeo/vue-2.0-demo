@@ -100,6 +100,7 @@ export const setMapList = ({commit, state}, zoom)=> {
     info.dqzuobiao = state.base.indexSearch.zuobiao || ''
 
     let promise = null
+    if (!zoom)zoom = 8
     if (zoom <= 8) {
         promise = api.getRoad(info)
     } else {
@@ -107,7 +108,6 @@ export const setMapList = ({commit, state}, zoom)=> {
     }
 
     promise.then(res=> {
-        console.log('[Leo]setMapList => ', res)
         if (res.returnCode == '00')
             commit(types.SET_MAP_LIST, res.list || [])
         else
@@ -142,7 +142,6 @@ export const setTypeJianSuo = ({commit, state})=> {
     let promise = api.getTypeJianSuo(info)
 
     promise.then(res=> {
-        console.log('[Leo]setTypeJianSuo => ', res)
         if (res.returnCode == '00')
             commit(types.SET_TYPE_JIAN_SUO, res.list || [])
         else

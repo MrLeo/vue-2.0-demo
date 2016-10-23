@@ -15,19 +15,19 @@
                 </div>
                 <div class="right">
                     <ol v-show="leftQuery.quyu">
-                        <li @click="selectQuyu('')" :class="{hover:selected.quyu==''}">不限</li>
+                        <li @click="selectQuyu('')" :class="{hover:indexSearch.quyu==''}">不限</li>
                         <li v-for="item in baseInfo.quYuList"
                             :id="item.id"
                             @click="selectQuyu(item.id)"
-                            :class="{hover:selected.quyu==item.id}">{{item.t_name}}
+                            :class="{hover:indexSearch.quyu==item.id}">{{item.t_name}}
                         </li>
                     </ol>
                     <ol v-show="leftQuery.ditie">
-                        <li @click="selectDitie('')" :class="{hover:selected.ditie==''}">不限</li>
+                        <li @click="selectDitie('')" :class="{hover:indexSearch.ditie==''}">不限</li>
                         <li v-for="item in baseInfo.diTieList"
                             :id="item.id"
                             @click="selectDitie(item.id)"
-                            :class="{hover:selected.ditie==item.id}">{{item.t_name}}
+                            :class="{hover:indexSearch.ditie==item.id}">{{item.t_name}}
                         </li>
                     </ol>
                 </div>
@@ -54,6 +54,9 @@
             }
         },
         computed: {
+            ...mapState({
+                indexSearch: state=>state.base.indexSearch
+            }),
             ...mapGetters({
                 baseInfo: 'baseInfo'
             })
@@ -70,12 +73,12 @@
             selectQuyu(type){
                 this.selected.quyu = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList()
             },
             selectDitie(type){
                 this.selected.ditie = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList()
             }
         }
     }

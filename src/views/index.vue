@@ -84,7 +84,7 @@
             'selected.keyword'(){
                 this.resetSearchInfo()
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList()
             }
         },
         methods: {

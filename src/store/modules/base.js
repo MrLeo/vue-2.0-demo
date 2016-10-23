@@ -28,17 +28,19 @@ const state = {
 //必须是《同步》事务
 const mutations = {
     [types.SET_INDEX_SEARCH_INFO](state, info){
+        console.log('[Leo]SET_INDEX_SEARCH_INFO => ', JSON.stringify(info))
         //基础查询条件
-        info.keyword ? state.indexSearch.keyword = info.keyword : ''
-        info.quyu ? state.indexSearch.quyu = info.quyu : ''
-        info.ditie ? state.indexSearch.ditie = info.ditie : ''
-        info.type ? state.indexSearch.type = info.type : ''
-        info.jiage ? state.indexSearch.jiage = info.jiage : ''
+        info.keyword || info.keyword == '' ? state.indexSearch.keyword = info.keyword : ''
+        info.quyu || info.quyu == '' ? state.indexSearch.quyu = info.quyu : ''
+        info.ditie || info.ditie == '' ? state.indexSearch.ditie = info.ditie : ''
+        info.type || info.type == '' ? state.indexSearch.type = info.type : ''
+        info.jiage || info.jiage == '' ? state.indexSearch.jiage = info.jiage : ''
         //更多查询条件
-        info.tese ? state.indexSearch.tese = info.tese : ''
-        info.huxing ? state.indexSearch.huxing = info.huxing : ''
-        info.huanxian ? state.indexSearch.huanxian = info.huanxian : ''
-        info.fujin ? state.indexSearch.fujin = info.fujin : ''
+        info.tese || info.tese == '' ? state.indexSearch.tese = info.tese : ''
+        info.huxing || info.huxing == '' ? state.indexSearch.huxing = info.huxing : ''
+        info.huanxian || info.huanxian == '' ? state.indexSearch.huanxian = info.huanxian : ''
+        info.fujin || info.fujin == '' ? state.indexSearch.fujin = info.fujin : ''
+
     },
     [types.SET_QUYU_LIST](state, list){
         Vue.set(state, 'quYuList', list)

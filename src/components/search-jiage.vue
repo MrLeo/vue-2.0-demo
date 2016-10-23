@@ -8,14 +8,14 @@
         <div class="box">
             <div class="navlist2 no">
                 <ul>
-                    <li @click="selectJiage('')" :class="{hover:selected.jiage==''}">不限</li>
-                    <li @click="selectJiage('1-1.5万')" :class="{hover:selected.jiage==['1-1.5万']}">1-1.5万</li>
-                    <li @click="selectJiage('1.5-2.5万')" :class="{hover:selected.jiage=='1.5-2.5万'}">1.5-2.5万</li>
-                    <li @click="selectJiage('2.5-3.5万')" :class="{hover:selected.jiage=='2.5-3.5万'}">2.5-3.5万</li>
-                    <li @click="selectJiage('3.5-5万')" :class="{hover:selected.jiage=='3.5-5万'}">3.5-5万</li>
-                    <li @click="selectJiage('5-6.5万')" :class="{hover:selected.jiage=='5-6.5万'}">5-6.5万</li>
-                    <li @click="selectJiage('6.5-8万')" :class="{hover:selected.jiage=='6.5-8万'}">6.5-8万</li>
-                    <li @click="selectJiage('8万以上')" :class="{hover:selected.jiage=='8万以上'}">8万以上</li>
+                    <li @click="selectJiage('')" :class="{hover:indexSearch.jiage==''}">不限</li>
+                    <li @click="selectJiage('1-1.5万')" :class="{hover:indexSearch.jiage==['1-1.5万']}">1-1.5万</li>
+                    <li @click="selectJiage('1.5-2.5万')" :class="{hover:indexSearch.jiage=='1.5-2.5万'}">1.5-2.5万</li>
+                    <li @click="selectJiage('2.5-3.5万')" :class="{hover:indexSearch.jiage=='2.5-3.5万'}">2.5-3.5万</li>
+                    <li @click="selectJiage('3.5-5万')" :class="{hover:indexSearch.jiage=='3.5-5万'}">3.5-5万</li>
+                    <li @click="selectJiage('5-6.5万')" :class="{hover:indexSearch.jiage=='5-6.5万'}">5-6.5万</li>
+                    <li @click="selectJiage('6.5-8万')" :class="{hover:indexSearch.jiage=='6.5-8万'}">6.5-8万</li>
+                    <li @click="selectJiage('8万以上')" :class="{hover:indexSearch.jiage=='8万以上'}">8万以上</li>
                     <h6>自定义价格（元/平）
                         <input type="text" placeholder="最小" v-model="min">
                         <input type="text" placeholder="最大" v-model="max">
@@ -41,6 +41,9 @@
             }
         },
         computed: {
+            ...mapState({
+                indexSearch: state=>state.base.indexSearch
+            }),
             ...mapGetters({
                 baseInfo: 'baseInfo'
             })
@@ -52,12 +55,12 @@
             selectJiage(type){
                 this.selected.jiage = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList()
             },
             inputJiage(){
                 this.selected.jiage = this.min + '-' + this.max
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList(this.$store.state.base.indexSearch)
+                this.setMapList()
             }
         }
     }
