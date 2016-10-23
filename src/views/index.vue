@@ -2,7 +2,7 @@
     <div id="index">
         <header>
             <div class="left">北京</div>
-            <h1><input type="text" placeholder="搜索楼盘"></h1>
+            <h1><input type="text" placeholder="搜索楼盘" v-model="selected.keyword"></h1>
             <div></div>
             <div class="right" @click="changeList">{{indexListType}}</div>
             <div class="clear"></div>
@@ -26,7 +26,7 @@
                     </dt>
                     <dd></dd>
                 </dl>
-                <router-link tag="b" to="/more-search">更多</router-link>
+                <router-link tag="b" to="/search/more">更多</router-link>
             </div>
         </header>
         <div style=" height:92px;"></div>
@@ -80,12 +80,19 @@
         },
         watch: {
             '$route' (to, from) {
-                console.log('[Leo]route chage => ', from, to)
+                console.log('[Leo]route change from=> ', from)
+                console.log('[Leo]route change to => ', to)
+            },
+            'selected.keyword'(){
+                this.resetSearchInfo()
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.setMapList(this.$store.state.base.indexSearch)
             }
         },
         methods: {
             ...mapActions([
-                'initIndexSearchCriteria'
+                'initIndexSearchCriteria',
+                'setMapList'
             ]),
             changeList(){
                 const _vm = this
@@ -107,6 +114,7 @@
                     this.currentSearchInfo = ''
             },
             resetSearchInfo(){
+                //TODO:清空查询条件
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, {})
             }
         },

@@ -14,7 +14,7 @@ import index from 'views/index.vue'
 
 export default new Router({
     base: '/',//应用的基路径
-    mode: 'hash', //"hash" (URL hash 模式) | "history"(HTML5 History 模式) | "abstract" (Node.js 环境)
+    mode: 'history', //"hash" (URL hash 模式) | "history"(HTML5 History 模式) | "abstract" (Node.js 环境)
     scrollBehavior (to, from, savedPosition) {//路由切换的滚动行为，只在 HTML5 history 模式下可用
         if (savedPosition) {
             return savedPosition
@@ -30,7 +30,6 @@ export default new Router({
             name: 'index',
             path: '/',
             component: index,
-            alias: '/index',
             children: [{
                 name: 'map',
                 path: 'map',
@@ -41,8 +40,8 @@ export default new Router({
                 component: resolve=>require(['views/indexList.vue'], resolve)
             }]
         }, {
-            name: 'more-search',
-            path: '/more-search',
+            name: 'search-more',
+            path: '/search/more',
             component: resolve=>require(['views/moreSearch.vue'], resolve)
         },
         {path: '*', redirect: '/'}

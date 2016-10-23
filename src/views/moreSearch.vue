@@ -92,7 +92,12 @@
                 //baseInfo: 'baseInfo'
             })
         },
-        watch: {},
+        watch: {
+            '$route' (to, from) {
+                console.log('[Leo]route change from=> ', from)
+                console.log('[Leo]route change to => ', to)
+            }
+        },
         methods: {
             ...mapMutations({
                 setIndexSearchInfo: types.SET_INDEX_SEARCH_INFO
@@ -106,6 +111,8 @@
             submit(){
                 console.log('[Leo]选好了 => ', JSON.stringify(this.selected))
                 this.setIndexSearchInfo(this.selected)
+                //router.go(-1)
+                console.log('[Leo]this.$route => ',this.$route)
             }
         },
         created(){
