@@ -62,6 +62,9 @@
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.setMapList()
             }
+        },
+        created(){
+            this.selected.jiage = this.indexSearch.jiage
         }
     }
 </script>

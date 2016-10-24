@@ -23,7 +23,10 @@
             </div>
             <div class="right" style="position:absolute; top:0; bottom:0; height:auto; width:50%;">
                 <ol ref="tese" v-show="currentSearch=='tese'">
-                    <li @click="selected.tese=''" :class="{hover:selected.tese==''}">不限</li>
+                    <li @click="selected.tese=''"
+                        :class="{hover:selected.tese==''}">
+                        不限
+                    </li>
                     <li v-for="item in teseList"
                         @click="selected.tese=item.id"
                         :class="{hover:selected.tese==item.id}">
@@ -31,7 +34,10 @@
                     </li>
                 </ol>
                 <ol ref="huxing" v-show="currentSearch=='huxing'">
-                    <li @click="selected.tese=''" :class="{hover:selected.huxing==''}">不限</li>
+                    <li @click="selected.huxing=''"
+                        :class="{hover:selected.huxing==''}">
+                        不限
+                    </li>
                     <li v-for="item in huxingList"
                         @click="selected.huxing=item.id"
                         :class="{hover:selected.huxing==item.id}">
@@ -39,7 +45,10 @@
                     </li>
                 </ol>
                 <ol ref="huanxian" v-show="currentSearch=='huanxian'">
-                    <li @click="selected.tese=''" :class="{hover:selected.huanxian==''}">不限</li>
+                    <li @click="selected.huanxian=''"
+                        :class="{hover:selected.huanxian==''}">
+                        不限
+                    </li>
                     <li v-for="item in huanxianList"
                         @click="selected.huanxian=item.id"
                         :class="{hover:selected.huanxian==item.id}">
@@ -86,11 +95,10 @@
             ...mapState({
                 teseList: state=>state.base.teseList,
                 huxingList: state=>state.base.huxingList,
-                huanxianList: state=>state.base.huanxianList
+                huanxianList: state=>state.base.huanxianList,
+                indexSearch: state=>state.base.indexSearch
             }),
-            ...mapGetters({
-                //baseInfo: 'baseInfo'
-            })
+            ...mapGetters({})
         },
         watch: {
             '$route' (to, from) {
@@ -103,7 +111,8 @@
                 setIndexSearchInfo: types.SET_INDEX_SEARCH_INFO
             }),
             ...mapActions([
-                'initMoreSearchCriteria'
+                'initMoreSearchCriteria',
+                'setMapList'
             ]),
             clickLeftMenu(type){
                 this.currentSearch = type
@@ -111,12 +120,17 @@
             submit(){
                 console.log('[Leo]选好了 => ', JSON.stringify(this.selected))
                 this.setIndexSearchInfo(this.selected)
+                this.setMapList()
                 router.go(-1)
             }
         },
         created(){
             const _vm = this
             _vm.initMoreSearchCriteria()
+            _vm.selected.tese = _vm.indexSearch.tese
+            _vm.selected.huxing = _vm.indexSearch.huxing
+            _vm.selected.huanxian = _vm.indexSearch.huanxian
+            _vm.selected.fujin = _vm.indexSearch.fujin
         },
         mounted(){
         }

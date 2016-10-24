@@ -28,18 +28,32 @@ const state = {
 //必须是《同步》事务
 const mutations = {
     [types.SET_INDEX_SEARCH_INFO](state, info){
-        //基础查询条件
-        info.keyword || info.keyword == '' ? state.indexSearch.keyword = info.keyword : ''
-        info.quyu || info.quyu == '' ? state.indexSearch.quyu = info.quyu : ''
-        info.ditie || info.ditie == '' ? state.indexSearch.ditie = info.ditie : ''
-        info.type || info.type == '' ? state.indexSearch.type = info.type : ''
-        info.jiage || info.jiage == '' ? state.indexSearch.jiage = info.jiage : ''
-        //更多查询条件
-        info.tese || info.tese == '' ? state.indexSearch.tese = info.tese : ''
-        info.huxing || info.huxing == '' ? state.indexSearch.huxing = info.huxing : ''
-        info.huanxian || info.huanxian == '' ? state.indexSearch.huanxian = info.huanxian : ''
-        info.fujin || info.fujin == '' ? state.indexSearch.fujin = info.fujin : ''
-
+        if (info.empty) {
+            //基础查询条件
+            state.indexSearch.keyword = ''
+            state.indexSearch.quyu = ''
+            state.indexSearch.ditie = ''
+            state.indexSearch.type = ''
+            state.indexSearch.jiage = ''
+            //更多查询条件
+            state.indexSearch.tese = ''
+            state.indexSearch.huxing = ''
+            state.indexSearch.huanxian = ''
+            state.indexSearch.fujin = ''
+        }
+        else {
+            //基础查询条件
+            info.keyword || info.keyword == '' ? state.indexSearch.keyword = info.keyword : ''
+            info.quyu || info.quyu == '' ? state.indexSearch.quyu = info.quyu : ''
+            info.ditie || info.ditie == '' ? state.indexSearch.ditie = info.ditie : ''
+            info.type || info.type == '' ? state.indexSearch.type = info.type : ''
+            info.jiage || info.jiage == '' ? state.indexSearch.jiage = info.jiage : ''
+            //更多查询条件
+            info.tese || info.tese == '' ? state.indexSearch.tese = info.tese : ''
+            info.huxing || info.huxing == '' ? state.indexSearch.huxing = info.huxing : ''
+            info.huanxian || info.huanxian == '' ? state.indexSearch.huanxian = info.huanxian : ''
+            info.fujin || info.fujin == '' ? state.indexSearch.fujin = info.fujin : ''
+        }
     },
     [types.SET_QUYU_LIST](state, list){
         Vue.set(state, 'quYuList', list)

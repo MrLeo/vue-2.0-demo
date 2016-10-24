@@ -50,9 +50,14 @@
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.setMapList()
             }
+        },
+        created(){
+            this.selected.type = this.indexSearch.type
         }
     }
 </script>
 <style scoped>
-    .navlist2 li.hover{ background:#e2e2e2;}
+    .navlist2 li.hover {
+        background: #e2e2e2;
+    }
 </style>

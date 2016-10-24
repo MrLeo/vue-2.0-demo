@@ -7,6 +7,7 @@
 
 import $ from 'jquery'
 import Fetch from '../utils/Fetch'
+import getLocation from '../utils/getLocation'
 
 const host = 'http://loushijie.cn/api/'
 
@@ -80,9 +81,21 @@ export default {
     getTypeJianSuo(info){
         info.sub ? '' : info.sub = ''
         info.page ? '' : info.page
-        return new Promise(function (resolve, reject) {
-            $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
+
+        let position = getLocation().then(position => {
+            return position
+        }).catch(error => {
+            console.error('[Leo]获取当前坐标出错 => ', error)
+            return []
         })
+
+        return position.then(res=> {
+            info.dqzuobiao = res.join(",")
+            return new Promise(function (resolve, reject) {
+                $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
+            })
+        })
+
         //return Fetch(host + 'type_jiansuoapi.php',{
         //    method:'PSOT',
         //    body:JSON.stringify(info)
@@ -97,9 +110,21 @@ export default {
      */
     getRoad(info){
         info.sub ? '' : info.sub = ''
-        return new Promise(function (resolve, reject) {
-            $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
+
+        let position = getLocation().then(position => {
+            return position
+        }).catch(error => {
+            console.error('[Leo]获取当前坐标出错 => ', error)
+            return []
         })
+
+        return position.then(res=> {
+            info.dqzuobiao = res.join(",")
+            return new Promise(function (resolve, reject) {
+                $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
+            })
+        })
+
         //return Fetch(host + 'roadapi.php',{
         //    method:'POST',
         //    body:JSON.stringify(info)
@@ -114,8 +139,19 @@ export default {
      */
     getMap(info){
         info.sub ? '' : info.sub = ''
-        return new Promise(function (resolve, reject) {
-            $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
+
+        let position = getLocation().then(position => {
+            return position
+        }).catch(error => {
+            console.error('[Leo]获取当前坐标出错 => ', error)
+            return []
+        })
+
+        return position.then(res=> {
+            info.dqzuobiao = res.join(",")
+            return new Promise(function (resolve, reject) {
+                $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
+            })
         })
     },
     /**

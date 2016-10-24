@@ -83,7 +83,6 @@
             '$route' (to, from) {
             },
             'selected.keyword'(){
-                this.resetSearchInfo()
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.setMapList()
             }
@@ -113,8 +112,7 @@
                     this.currentSearchInfo = ''
             },
             resetSearchInfo(){
-                //TODO:清空查询条件
-                this.$store.commit(types.SET_INDEX_SEARCH_INFO, {})
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, {'empty': true})
             }
         },
         created(){
@@ -123,6 +121,8 @@
             //初始化判断本地 是否为空
             var subjectColor = window.localStorage.getItem('subjectColor');
             subjectColor && $('header').addClass(subjectColor)
+
+            _vm.selected.keyword=_vm.$store.state.base.indexSearch.keyword
 
             //初始化检索信息的数据
             _vm.initIndexSearchCriteria()
