@@ -111,7 +111,7 @@
             submit(){
                 console.log('[Leo]选好了 => ', JSON.stringify(this.selected))
                 this.setIndexSearchInfo(this.selected)
-                //router.go(-1)
+                router.go(-1)
             }
         },
         created(){

@@ -46,6 +46,7 @@
 </template>
 
 <script>
+    import $ from 'jquery'
     import {mapState, mapGetters, mapActions} from 'vuex'
     import * as types from '../store/mutation-types'
     import vFooter from 'components/footer'
@@ -118,8 +119,16 @@
         },
         created(){
             const _vm = this
-            router.push({path: 'map'})
+
+            //初始化判断本地 是否为空
+            var subjectColor = window.localStorage.getItem('subjectColor');
+            subjectColor && $('header').addClass(subjectColor)
+
+            //初始化检索信息的数据
             _vm.initIndexSearchCriteria()
+
+            //默认展示地图
+            router.push({path: 'map'})
         }
     }
 </script>
