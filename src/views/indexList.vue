@@ -5,26 +5,32 @@
 */
 <template>
     <div class="indexlist">
-        <dl v-for="item in typeJianSuo">
-            <dt :style="{
-                backgroundImage:'url(http://www.loushijie.cn/'+item.p_url+')',
-            }"><!--<img :src="'http://www.loushijie.cn/'+item.p_url">--></dt>
-            <dd>
-                <h3>{{item.p_name}}</h3>
-                <h6>{{item.t_name}}</h6>
-                <h4>{{item.adds}}</h4>
-                <h5><span v-if="item.n_name">{{item.n_name}}</span></h5>
-                <em>{{item.jiage}}</em>
-            </dd>
-        </dl>
+        <a v-for="item in typeJianSuo" :key="item.id" :href="getUrl(item)">
+            <dl>
+                <!--:style="{backgroundImage:'url('+convertPUrl(item.p_url)+')'}"-->
+                <dt v-lazy:background-image="convertPUrl(item.p_url)">
+                    <!--<img :src="'http://www.loushijie.cn/'+item.p_url">--></dt>
+                <dd>
+                    <h3>{{item.p_name}}</h3>
+                    <h6>{{item.t_name}}</h6>
+                    <h4>{{item.adds}}</h4>
+                    <h5><span v-if="item.n_name">{{item.n_name}}</span></h5>
+                    <em>{{item.jiage}}</em>
+                </dd>
+            </dl>
+        </a>
     </div>
 </template>
 <script>
     import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
+    import * as types from '../store/mutation-types'
     export default{
         name: 'list',
         data(){
-            return {}
+            return {
+                busy: false,
+                page: 1
+            }
         },
         computed: {
             ...mapState({
@@ -37,8 +43,17 @@
             ...mapMutations({}),
             ...mapActions([
                 'setTypeJianSuo'
-            ])
-            //TODO:分页，上拉加载更多
+            ]),
+            convertPUrl(url){
+                if (url) {
+                    return 'http://www.loushijie.cn/' + url
+                } else {
+                    return './static/images/icon_default.png'
+                }
+            },
+            getUrl(item){
+                return 'h5/view/product_info.php?id=' + item['id'] + '&zuobian=' + item['zuobian'] + '&tel=' + item['tel'] + '&jiage=' + item['jiage']
+            }
         },
         created(){
             const _vm = this

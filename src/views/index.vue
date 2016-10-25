@@ -67,6 +67,7 @@
         computed: {
             ...mapState({
                 //quYuList: state => state.base.quYuList
+                indexSearch: state=>state.base.indexSearch
             }),
             ...mapGetters({
                 //baseInfo: 'baseInfo'
@@ -83,13 +84,14 @@
             '$route' (to, from) {
             },
             'selected.keyword'(){
-                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList()
+                const _vm = this
+                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
             }
         },
         methods: {
             ...mapActions([
                 'initIndexSearchCriteria',
+                'setRoadList',
                 'setMapList'
             ]),
             changeList(){
@@ -122,7 +124,7 @@
             var subjectColor = window.localStorage.getItem('subjectColor');
             subjectColor && $('header').addClass(subjectColor)
 
-            _vm.selected.keyword=_vm.$store.state.base.indexSearch.keyword
+            _vm.selected.keyword = _vm.$store.state.base.indexSearch.keyword
 
             //初始化检索信息的数据
             _vm.initIndexSearchCriteria()

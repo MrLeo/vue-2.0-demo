@@ -16,10 +16,10 @@
     "jquery": "^2.2.3",
     "blueimp-md5": "^2.3.1",
     "socket.io-client": "^1.4.6",
-    "vue-infinite-scroll": "*",
-    "mint-loadmore": "*",
-    "vue-indicator": "*",
-    "vue-swipe": "*"
+    "vue-lazyload": "^0.8.3",
+    "vue-infinite-scroll": "^0.2.3",
+    "mint-loadmore": "^0.1.2",
+    "vue-swipe": "^0.2.7"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

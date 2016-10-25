@@ -71,6 +71,7 @@
         },
         methods: {
             ...mapActions([
+                'setRoadList',
                 'setMapList'
             ]),
             chageLeft(type){
@@ -81,13 +82,11 @@
             selectQuyu(type){
                 this.selected.quyu = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList()
             },
             selectDitie(type){
                 this.selected.ditie = type
                 console.log('[Leo] => ', this.selected)
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList()
             }
         },
         created(){

@@ -120,7 +120,6 @@
             submit(){
                 console.log('[Leo]选好了 => ', JSON.stringify(this.selected))
                 this.setIndexSearchInfo(this.selected)
-                this.setMapList()
                 router.go(-1)
             }
         },

@@ -8,102 +8,112 @@
 </template>
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
+    import * as types from '../store/mutation-types'
     export default{
         name: 'map',
         data(){
             return {
-                map: null
+                map: null,
+                markers: [],
+                markderLevel: 1
             }
         },
         computed: {
             ...mapState({
-                //mapList: state => state.base.mapList
+                indexSearch: state=>state.base.indexSearch
+                //mapList: state => state.base.mapList,
             }),
             ...mapGetters({
                 baseInfo: 'baseInfo'
             })
         },
-        watch: {},
+        watch: {
+            "indexSearch": {
+                deep: true,
+                handler: function (val, oldVal) {
+                    const _vm = this
+                    console.log('[Leo]indexSearch has be change => ', JSON.stringify(val))
+                    _vm.setSecondLevelMarker().then(res=> {
+                        //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                        //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                    })
+                }
+            }
+        },
         methods: {
             ...mapActions([
+                'setRoadList',
                 'setMapList'
             ]),
             init(){
                 const _vm = this
-                let zoom = 9
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
-                    zoom: zoom
+                    zoom: 8
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
-                let markers = []
-                let maps = _vm.setMapList(zoom)
-                //                maps.then(res=> {
-                //                    _vm.$store.state.base.mapList.filter(function (item) {
-                //                        const info = item[1]
-                //                        item.zuobiao && _vm.addMarker(info, item.zuobiao.split(','))
-                //                    })
-                //                })
-
-                //使用监听，因为后面查询条件改变后需要重新渲染
-                _vm.$store.watch(function (state) {
-                    return state.base.mapList
-                }, function (val) {
+                let maps = _vm.setRoadList()//获取初始一级覆盖物
+                maps.then(res=> {
                     //移除旧的marker
-                    markers && _vm.map.remove(markers)
-                    markers = []
-                    val.filter(item=> {
-                        let count = 'count'
-                        if (zoom > 13)count = 1
-                        const info = `<p>${item.t_name}</p><p>${item[count]}</p>`
-                        if (item.zuobiao) {
-                            let marker = _vm.createMarker(info, {position: item.zuobiao.split(',')})
-                            markers.push(marker)
-
-                            //TODO：为marker绑定交互事件：①显示二级覆盖物；②进入详情页
-                            //绑定p_name jiage 。
-                            //项目点击到详情页需要id，zuobian，tel，jiage字段
-                            //h5/view/news_info.php     咨询详情
-                            //h5/view/product_info.php 项目详情
-                            //当Marker点被点击的时候，我们将显示其下级的Marker标记，setFitView方法用来将地图调整到合适的范围来显示我们需要展示的markers。
-                            //                            var _onClick = function (e) {
-                            //                                if (e.target.subMarkers && e.target.subMarkers.length) {
-                            //                                    _vm.map.add(e.target.subMarkers);
-                            //                                    _vm.map.setFitView(e.target.subMarkers);
-                            //                                    _vm.map.remove(markers)
-                            //                                }
-                            //                            }
-                            //                            AMap.event.addListener(marker, 'click', _onClick);
-                            //同时为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
-                            //                            var _onZoomEnd = function (e) {
-                            //                                if (_vm.map.getZoom() < 8) {
-                            //                                    for (var i = 0; i < markers.length; i += 1) {
-                            //                                        _vm.map.remove(markers[i].subMarkers)
-                            //                                    }
-                            //                                }
-                            //                            }
-                            //                            AMap.event.addListener(_vm.map, 'zoomend', _onZoomEnd);
+                    _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
+                    _vm.markers = []
+                    _vm.$store.state.base.mapList.filter(function (item) {
+                        if (item.zuobiao && item.zuobiao.length > 1) {
+                            let marker = _vm.createMarker({
+                                position: item.zuobiao.split(','),
+                                info: `<p>${item.t_name}</p><p>${item.count}</p>`
+                            }, 'map-marker')
+                            marker.data['id'] = item.id
+                            marker.data['dqzuobiao'] = item.zuobiao
+                            _vm.markers.push(marker)
+                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                            AMap.event.addListener(marker, 'click', function (e) {
+                                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: e.target.data.dqzuobiao})
+                                _vm.setSecondLevelMarker().then(res=> {
+                                    //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                                    _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                                })
+                            });
                         }
                     })
                 })
+
+                //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
+                var _onZoomEnd = function (e) {
+                    console.log('[Leo]缩放级别 => ', _vm.map.getZoom())
+                    if (_vm.map.getZoom() >= 13) {
+                        console.log('[Leo]缩放级别大于13 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
+                        let curCenter = _vm.map.getCenter()
+                        _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: [curCenter.lat, curCenter.lng].join(",")})
+                        _vm.setSecondLevelMarker().then(res=> {
+                            //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                        })
+                    }
+                }
+                AMap.event.addListener(_vm.map, 'zoomend', _onZoomEnd);
+
+                //使用监听，因为后面查询条件改变后需要重新渲染
+                /* _vm.$store.watch(function (state) {
+                 return state.base.mapList
+                 }, function (val) {
+                 })*/
             },
-            createMarker(markerInfo, data, hide){
+            createMarker(data, className = "map-marker", hide = false){
                 const _vm = this
                 //http://lbs.amap.com/api/javascript-api/guide/draw-on-map/marker-point/Marker多级展示的交互实现 + 绑定事件完成交互
                 // 自定义点标记内容
-                var markerContent = document.createElement("div");
-                // 点标记中的图标
-                var markerImg = document.createElement("img");
-                markerImg.className = "markerlnglat";
-                markerImg.src = "http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png";
-                markerContent.appendChild(markerImg);
+                var markerContent = document.createElement("div")
                 // 点标记中的文本
-                var markerSpan = document.createElement("p");
-                markerSpan.className = 'map-marker';
-                markerSpan.innerHTML = markerInfo || "0";
-                markerContent.appendChild(markerSpan);
+                markerContent.className = className
+                markerContent.innerHTML = data.info || "<img src='http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png'>"
+                // 点标记中的图标
+                //var markerImg = document.createElement("img")
+                //markerImg.className = "markerlnglat"
+                //markerImg.src = "http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png"
+                //markerContent.appendChild(markerImg)
                 //定义marker
                 let marker = new AMap.Marker({
                     //icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
@@ -113,18 +123,54 @@
                     //zIndex: data.count
                     position: data.position || [116.398075, 39.908149]//[39.911940136336277, 116.40602523623816]
                 });
-                marker.subMarkers = [];
+                marker.subMarkers = []
+                marker.data = {}
                 if (!hide) {
-                    marker.setMap(_vm.map);
+                    marker.setMap(_vm.map)
                 }
-                //                //设置子marker
-                //                if (data.subMarkers && data.subMarkers.length) {
-                //                    for (var i = 0; i < data.subMarkers.length; i += 1) {
-                //                        marker.subMarkers.push(createMarker('',data.subMarkers[i], true));
-                //                    }
-                //                }
-
+                // //设置子marker
+                // if (data.subMarkers && data.subMarkers.length) {
+                //     for (var i = 0; i < data.subMarkers.length; i += 1) {
+                //         marker.subMarkers.push(createMarker('',data.subMarkers[i], true))
+                //     }
+                // }
                 return marker
+            },
+            setSecondLevelMarker(){
+                const _vm = this
+                //移除旧的marker
+                _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
+                _vm.markers = []
+
+                return _vm.setMapList().then(res=> {
+                    for (let item of res) {
+                        if (item.zuobiao && item.zuobiao.length > 1) {
+                            let marker = _vm.createMarker({
+                                position: item.zuobiao.split(','),
+                                info: `<p>${item.p_name}</p><p>${item['jiage']}</p>`
+                            }, 'map-marker__2')
+
+                            //详情页面需要的参数
+                            marker.data['id'] = item.id
+                            marker.data['zuobian'] = item.zuobiao
+                            marker.data['tel'] = item.tel
+                            marker.data['jiage'] = item.jiage
+
+                            _vm.markers.push(marker)
+                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                            AMap.event.addListener(marker, 'click', _vm.clicksecondLevelMarker);
+                        }
+                    }
+                    /*_vm.map.add(_vm.markers)
+                     _vm.map.setFitView(_vm.markers)
+                     _vm.map.remove(_vm.markers)*/
+                    return res
+                })
+            },
+            clicksecondLevelMarker(e){
+                let data=e.target.data
+                console.log('[Leo]点击二级覆盖物 => 进入详情页 => ',data)
+                window.location.href='h5/view/product_info.php?id='+data['id']+'&zuobian='+data['zuobian']+'&tel='+data['tel']+'&jiage='+data['jiage']
             }
         },
         created(){
@@ -143,13 +189,11 @@
         height: 100%;
     }
 
-    .map-marker {
-        position: absolute;
-        top: 0px;
-        left: -13px;
+    .map-marker,
+    .map-marker__2 {
         width: 50px;
         height: 50px;
-        border-radius: 50%;
+        border: 1px solid #fff;
         background-color: red;
         text-align: center;
         color: #fff;
@@ -168,5 +212,24 @@
         -webkit-box-direction: normal;
         -webkit-flex-direction: column;
         flex-direction: column;
+    }
+
+    .map-marker {
+        border-radius: 50%;
+    }
+
+    .map-marker__2 {
+        border-radius: 10px;
+        width: auto;
+        white-space: nowrap;
+        line-height: 20px;
+        height: 40px;
+        padding: 0 5px;
+    }
+
+    .amap-marker {
+        -moz-transform: rotate(0deg) translate(-50%, -50%) !important;
+        -webkit-transform: rotate(0deg) translate(-50%, -50%) !important;
+        transform: rotate(0deg) translate(-50%, -50%) !important;
     }
 </style>

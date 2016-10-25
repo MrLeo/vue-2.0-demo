@@ -43,12 +43,12 @@
         },
         methods: {
             ...mapActions([
+                'setRoadList',
                 'setMapList'
             ]),
             selectType(type){
                 this.selected.type = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
-                this.setMapList()
             }
         },
         created(){

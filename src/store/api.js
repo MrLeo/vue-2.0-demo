@@ -140,19 +140,25 @@ export default {
     getMap(info){
         info.sub ? '' : info.sub = ''
 
-        let position = getLocation().then(position => {
-            return position
-        }).catch(error => {
-            console.error('[Leo]获取当前坐标出错 => ', error)
-            return []
-        })
+        if (!info.dqzuobiao) {
+            let position = getLocation().then(position => {
+                return position
+            }).catch(error => {
+                console.error('[Leo]获取当前坐标出错 => ', error)
+                return []
+            })
 
-        return position.then(res=> {
-            info.dqzuobiao = res.join(",")
+            return position.then(res=> {
+                info.dqzuobiao = res.join(",")
+                return new Promise(function (resolve, reject) {
+                    $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
+                })
+            })
+        } else {
             return new Promise(function (resolve, reject) {
                 $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
             })
-        })
+        }
     },
     /**
      * 10.详情页-户型

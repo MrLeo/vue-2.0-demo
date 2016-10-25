@@ -20,7 +20,7 @@ export default function getLocation() {
                 function (position) {
                     let longitude = position.coords.longitude//经度
                     let latitude = position.coords.latitude//纬度
-                    console.log('[Leo]当前坐标 => ', position)
+                    //console.log('[Leo]当前坐标 => ', position)
                     resolve([longitude, latitude])
                 },
                 function (error) {
