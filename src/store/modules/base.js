@@ -79,7 +79,7 @@ const mutations = {
         Vue.set(state, 'typeList', list)
     },
     [types.SET_ROAD_LIST](state, list){
-        Vue.set(state, 'mapList', list)
+        Vue.set(state, 'roadList', list)
     },
     [types.SET_MAP_LIST](state, list){
         Vue.set(state, 'mapList', list)

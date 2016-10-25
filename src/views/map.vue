@@ -59,7 +59,7 @@
                     //移除旧的marker
                     _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
                     _vm.markers = []
-                    _vm.$store.state.base.mapList.filter(function (item) {
+                    _vm.$store.state.base.roadList.filter(function (item) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
                             let marker = _vm.createMarker({
                                 position: item.zuobiao.split(','),
@@ -70,7 +70,7 @@
                             _vm.markers.push(marker)
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                             AMap.event.addListener(marker, 'click', function (e) {
-                                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: e.target.data.dqzuobiao})
+                                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                                     _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
@@ -168,9 +168,9 @@
                 })
             },
             clicksecondLevelMarker(e){
-                let data=e.target.data
-                console.log('[Leo]点击二级覆盖物 => 进入详情页 => ',data)
-                window.location.href='h5/view/product_info.php?id='+data['id']+'&zuobian='+data['zuobian']+'&tel='+data['tel']+'&jiage='+data['jiage']
+                let data = e.target.data
+                console.log('[Leo]点击二级覆盖物 => 进入详情页 => ', data)
+                window.location.href = 'h5/view/product_info.php?id=' + data['id'] + '&zuobian=' + data['zuobian'] + '&tel=' + data['tel'] + '&jiage=' + data['jiage']
             }
         },
         created(){
