@@ -84,8 +84,7 @@
             '$route' (to, from) {
             },
             'selected.keyword'(){
-                const _vm = this
-                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
             }
         },
         methods: {
@@ -114,7 +113,9 @@
                     this.currentSearchInfo = ''
             },
             resetSearchInfo(){
+                //this.selected.keyword = ''
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, {'empty': true})
+                this.$store.state.base.tempVm.$emit('resetSearchInfo')
             }
         },
         created(){

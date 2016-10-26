@@ -3,7 +3,9 @@ import * as types from "../mutation-types";
 
 //状态数据源
 const state = {
+    tempVm: new Vue(),
     indexSearch: {
+        empty: true,
         sub: '',
         page: '',//分页
         quyu: '',//区域的id
@@ -33,6 +35,7 @@ const state = {
 const mutations = {
     [types.SET_INDEX_SEARCH_INFO](state, info){
         if (info.empty) {
+            state.indexSearch.empty = !!info.empty
             //必选查询条件
             state.indexSearch.sub = ''
             //分页
@@ -51,6 +54,7 @@ const mutations = {
             state.indexSearch.dqzuobiao = ''
         }
         else {
+            state.indexSearch.empty = !!info.empty
             //必选查询条件
             info.sub || info.sub == '' ? state.indexSearch.sub = info.sub : ''
             //分页

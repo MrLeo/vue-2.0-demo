@@ -1,7 +1,7 @@
 <template>
     <footer class="mainmenu">
         <ul>
-            <router-link to="/map" tag="li" active-class="hover">
+            <router-link :to="{name: 'index'}" tag="li" active-class="hover">
                 <em></em>
                 <p>首页</p>
             </router-link>

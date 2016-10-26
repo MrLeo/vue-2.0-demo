@@ -33,10 +33,12 @@
                 handler: function (val, oldVal) {
                     const _vm = this
                     console.log('[Leo]indexSearch has be change => ', JSON.stringify(val))
-                    _vm.setSecondLevelMarker().then(res=> {
-                        //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
-                        //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                    })
+                    if (!val.empty) {
+                        _vm.setSecondLevelMarker().then(res=> {
+                            //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                        })
+                    }
                 }
             }
         },
@@ -56,28 +58,13 @@
                 })
                 let maps = _vm.setRoadList()//获取初始一级覆盖物
                 maps.then(res=> {
-                    //移除旧的marker
-                    _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
-                    _vm.markers = []
-                    _vm.$store.state.base.roadList.filter(function (item) {
-                        if (item.zuobiao && item.zuobiao.length > 1) {
-                            let marker = _vm.createMarker({
-                                position: item.zuobiao.split(','),
-                                info: `<p>${item.t_name}</p><p>${item.count}</p>`
-                            }, 'map-marker')
-                            marker.data['id'] = item.id
-                            marker.data['dqzuobiao'] = item.zuobiao
-                            _vm.markers.push(marker)
-                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                            AMap.event.addListener(marker, 'click', function (e) {
-                                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
-                                _vm.setSecondLevelMarker().then(res=> {
-                                    //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
-                                    _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                                })
-                            });
-                        }
-                    })
+                    _vm.setFirstLevelMarker()
+                })
+
+                _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
+                    console.log('[Leo]resetSearchInfo => ')
+                    _vm.setFirstLevelMarker()
+                    _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                 })
 
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
@@ -136,6 +123,31 @@
                 // }
                 return marker
             },
+            setFirstLevelMarker(){
+                const _vm = this
+                //移除旧的marker
+                _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
+                _vm.markers = []
+                _vm.$store.state.base.roadList.filter(function (item) {
+                    if (item.zuobiao && item.zuobiao.length > 1) {
+                        let marker = _vm.createMarker({
+                            position: item.zuobiao.split(','),
+                            info: `<p>${item.t_name}</p><p>${item.count}</p>`
+                        }, 'map-marker')
+                        marker.data['id'] = item.id
+                        marker.data['dqzuobiao'] = item.zuobiao
+                        _vm.markers.push(marker)
+                        //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                        AMap.event.addListener(marker, 'click', function (e) {
+                            _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
+                            _vm.setSecondLevelMarker().then(res=> {
+                                //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                                _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                            })
+                        });
+                    }
+                })
+            },
             setSecondLevelMarker(){
                 const _vm = this
                 //移除旧的marker
@@ -163,9 +175,6 @@
                         }
                     }
                     return res
-                    /*_vm.map.add(_vm.markers)
-                     _vm.map.setFitView(_vm.markers)
-                     _vm.map.remove(_vm.markers)*/
                 })
             },
             clicksecondLevelMarker(e){
