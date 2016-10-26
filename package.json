@@ -13,13 +13,12 @@
     "vue-router": "^2.0.0",
     "vuex": "^2.0.0",
     "vue-resource": "^1.0.3",
+    "whatwg-fetch": "*",
     "jquery": "^2.2.3",
     "blueimp-md5": "^2.3.1",
     "socket.io-client": "^1.4.6",
     "vue-lazyload": "^0.8.3",
-    "vue-infinite-scroll": "^0.2.3",
-    "mint-loadmore": "^0.1.2",
-    "vue-swipe": "^0.2.7"
+    "mint-loadmore": "^0.1.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

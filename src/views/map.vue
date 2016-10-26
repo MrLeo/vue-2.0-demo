@@ -142,7 +142,7 @@
                 _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
                 _vm.markers = []
 
-                return _vm.setMapList().then(res=> {
+                return _vm.setMapList().then(function (res) {
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
                             let marker = _vm.createMarker({
@@ -155,22 +155,26 @@
                             marker.data['zuobian'] = item.zuobiao
                             marker.data['tel'] = item.tel
                             marker.data['jiage'] = item.jiage
+                            marker.data['name'] = item.p_name
 
                             _vm.markers.push(marker)
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                             AMap.event.addListener(marker, 'click', _vm.clicksecondLevelMarker);
                         }
                     }
+                    return res
                     /*_vm.map.add(_vm.markers)
                      _vm.map.setFitView(_vm.markers)
                      _vm.map.remove(_vm.markers)*/
-                    return res
                 })
             },
             clicksecondLevelMarker(e){
                 let data = e.target.data
                 console.log('[Leo]点击二级覆盖物 => 进入详情页 => ', data)
-                window.location.href = 'h5/view/product_info.php?id=' + data['id'] + '&zuobian=' + data['zuobian'] + '&tel=' + data['tel'] + '&jiage=' + data['jiage']
+                window.localStorage.setItem('detailTitle', data['name'])
+                window.localStorage.setItem('detailTel', data['tel'])
+                window.localStorage.setItem('detailXY', data['zuobian'])
+                window.location.href = 'h5/view/product_info.php?id=' + data['id']
             }
         },
         created(){

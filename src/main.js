@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import App from './App'
-import VueResource from 'vue-resource'
-import VueRouter from 'vue-router'
 import router from './router'
 import store from './store'
 import * as filters from './filters'
 
-Vue.config.devtools = true//TODO：开发阶段使用
+// ajax插件（fetch）
+// https://github.com/github/fetch
+import 'whatwg-fetch'
 
 // Lazyload - 图片延迟加载
 // <https://github.com/hilongjw/vue-lazyload>
@@ -19,12 +19,11 @@ Vue.use(VueLazyload, {
     attempt: 1
 })
 
-//Vue.use(VueResource)
-//Vue.use(VueRouter)
-
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
+
+Vue.config.devtools = true//TODO：开发阶段使用
 
 window.router = router
 

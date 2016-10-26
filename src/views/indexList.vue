@@ -5,20 +5,18 @@
 */
 <template>
     <div class="indexlist">
-        <a v-for="item in typeJianSuo" :key="item.id" :href="getUrl(item)">
-            <dl>
-                <!--:style="{backgroundImage:'url('+convertPUrl(item.p_url)+')'}"-->
-                <dt v-lazy:background-image="convertPUrl(item.p_url)">
-                    <!--<img :src="'http://www.loushijie.cn/'+item.p_url">--></dt>
-                <dd>
-                    <h3>{{item.p_name}}</h3>
-                    <h6>{{item.t_name}}</h6>
-                    <h4>{{item.adds}}</h4>
-                    <h5><span v-if="item.n_name">{{item.n_name}}</span></h5>
-                    <em>{{item.jiage}}</em>
-                </dd>
-            </dl>
-        </a>
+        <dl v-for="item in typeJianSuo" :key="item.id" @click="goToDetail(item)">
+            <!--:style="{backgroundImage:'url('+convertPUrl(item.p_url)+')'}"-->
+            <dt v-lazy:background-image="convertPUrl(item.p_url)">
+                <!--<img :src="'http://www.loushijie.cn/'+item.p_url">--></dt>
+            <dd>
+                <h3>{{item.p_name}}</h3>
+                <h6>{{item.t_name}}</h6>
+                <h4>{{item.adds}}</h4>
+                <h5><span v-if="item.n_name">{{item.n_name}}</span></h5>
+                <em>{{item.jiage}}</em>
+            </dd>
+        </dl>
     </div>
 </template>
 <script>
@@ -51,8 +49,11 @@
                     return './static/images/icon_default.png'
                 }
             },
-            getUrl(item){
-                return 'h5/view/product_info.php?id=' + item['id'] + '&zuobian=' + item['zuobian'] + '&tel=' + item['tel'] + '&jiage=' + item['jiage']
+            goToDetail(item){
+                window.localStorage.setItem('detailTitle', item['p_name'])
+                window.localStorage.setItem('detailTel', item['tel'])
+                window.localStorage.setItem('detailXY', item['zuobiao'])
+                window.location.href = 'h5/view/product_info.php?id=' + item['id']
             }
         },
         created(){
