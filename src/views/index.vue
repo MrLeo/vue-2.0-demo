@@ -82,6 +82,10 @@
         },
         watch: {
             '$route' (to, from) {
+                console.debug('[Leo]$route \nfrom => ', from, ' \nto => ', to)
+                if (to.name == "index") {
+                    router.push({path: 'map'}) //默认展示地图
+                }
             },
             'selected.keyword'(){
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
