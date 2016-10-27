@@ -53,7 +53,8 @@
                 window.localStorage.setItem('detailTitle', item['p_name'])
                 window.localStorage.setItem('detailTel', item['tel'])
                 window.localStorage.setItem('detailXY', item['zuobiao'])
-                window.location.href = 'h5/view/product_info.php?id=' + item['id']
+                //window.location.href = 'h5/view/product_info.php?id=' + item['id']
+                window.location.href = 'detail_product.html?id=' + item['id']
             }
         },
         created(){

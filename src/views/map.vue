@@ -183,7 +183,8 @@
                 window.localStorage.setItem('detailTitle', data['name'])
                 window.localStorage.setItem('detailTel', data['tel'])
                 window.localStorage.setItem('detailXY', data['zuobian'])
-                window.location.href = 'h5/view/product_info.php?id=' + data['id']
+                //window.location.href = 'h5/view/product_info.php?id=' + data['id']
+                window.location.href = 'detail_product.html?id=' + data['id']
             }
         },
         created(){
