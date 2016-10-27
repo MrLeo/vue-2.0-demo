@@ -133,9 +133,6 @@
 
             //初始化检索信息的数据
             _vm.initIndexSearchCriteria()
-
-            //默认展示地图
-            router.push({path: 'map'})
         }
     }
 </script>

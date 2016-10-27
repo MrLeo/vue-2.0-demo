@@ -44,6 +44,6 @@ export default new Router({
             path: '/search/more',
             component: resolve=>require(['views/moreSearch.vue'], resolve)
         },
-        {path: '*', redirect: '/'}
+        {path: '/', redirect: '/map'}
     ]
 })
