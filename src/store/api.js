@@ -82,19 +82,19 @@ export default {
         info.sub ? '' : info.sub = ''
         info.page ? '' : info.page
 
-        let position = getLocation().then(position => {
-            return position
-        }).catch(error => {
-            console.error('[Leo]获取当前坐标出错 => ', error)
-            return []
+        //let position = getLocation().then(position => {
+        //    return position
+        //}).catch(error => {
+        //    console.error('[Leo]获取当前坐标出错 => ', error)
+        //    return []
+        //})
+        //
+        //return position.then(res=> {
+        //    info.dqzuobiao = res.join(",")
+        return new Promise(function (resolve, reject) {
+            $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
         })
-
-        return position.then(res=> {
-            info.dqzuobiao = res.join(",")
-            return new Promise(function (resolve, reject) {
-                $.post(host + 'type_jiansuoapi.php', info, res=>resolve(JSON.parse(res)))
-            })
-        })
+        //})
 
         //return Fetch(host + 'type_jiansuoapi.php',{
         //    method:'PSOT',
@@ -111,19 +111,19 @@ export default {
     getRoad(info){
         info.sub ? '' : info.sub = ''
 
-        let position = getLocation().then(position => {
-            return position
-        }).catch(error => {
-            console.error('[Leo]获取当前坐标出错 => ', error)
-            return []
+        //let position = getLocation().then(position => {
+        //    return position
+        //}).catch(error => {
+        //    console.error('[Leo]获取当前坐标出错 => ', error)
+        //    return []
+        //})
+        //
+        //return position.then(res=> {
+        //    info.dqzuobiao = res.join(",")
+        return new Promise(function (resolve, reject) {
+            $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
         })
-
-        return position.then(res=> {
-            info.dqzuobiao = res.join(",")
-            return new Promise(function (resolve, reject) {
-                $.post(host + 'roadapi.php', info, res=>resolve(JSON.parse(res)))
-            })
-        })
+        //})
 
         //return Fetch(host + 'roadapi.php',{
         //    method:'POST',
@@ -140,25 +140,25 @@ export default {
     getMap(info){
         info.sub ? '' : info.sub = ''
 
-        if (!info.dqzuobiao) {
-            let position = getLocation().then(position => {
-                return position
-            }).catch(error => {
-                console.error('[Leo]获取当前坐标出错 => ', error)
-                return []
-            })
-
-            return position.then(res=> {
-                info.dqzuobiao = res.join(",")
-                return new Promise(function (resolve, reject) {
-                    $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
-                })
-            })
-        } else {
-            return new Promise(function (resolve, reject) {
-                $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
-            })
-        }
+        //if (!info.dqzuobiao) {
+        //    let position = getLocation().then(position => {
+        //        return position
+        //    }).catch(error => {
+        //        console.error('[Leo]获取当前坐标出错 => ', error)
+        //        return []
+        //    })
+        //
+        //    return position.then(res=> {
+        //        info.dqzuobiao = res.join(",")
+        //        return new Promise(function (resolve, reject) {
+        //            $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
+        //        })
+        //    })
+        //} else {
+        return new Promise(function (resolve, reject) {
+            $.post(host + 'mapapi.php', info, res=>resolve(JSON.parse(res)))
+        })
+        //}
     },
     /**
      * 10.详情页-户型
