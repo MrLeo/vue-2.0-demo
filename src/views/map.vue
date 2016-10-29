@@ -132,19 +132,22 @@
                     if (item.zuobiao && item.zuobiao.length > 1) {
                         let marker = _vm.createMarker({
                             position: item.zuobiao.split(','),
-                            info: `<p>${item.t_name}</p><p>${item.count}</p>`
+                            info: `<p>${item.t_name}</p><p>${item.count}</p>`,
+                            id: item.id
                         }, 'map-marker')
                         marker.data['id'] = item.id
+                        marker.data['t_name'] = item.t_name
                         marker.data['dqzuobiao'] = item.zuobiao
                         _vm.markers.push(marker)
                         //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                        AMap.event.addListener(marker, 'click', function (e) {
+                        marker.on('click', function (e) {
+                            console.log('[Leo]marker => ', e.target.data.id, e.target.data.t_name)
                             _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
                             _vm.setSecondLevelMarker().then(res=> {
                                 //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                                 _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                             })
-                        });
+                        })
                     }
                 })
             },
@@ -171,7 +174,7 @@
 
                             _vm.markers.push(marker)
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                            AMap.event.addListener(marker, 'click', _vm.clicksecondLevelMarker);
+                            marker.on('click', _vm.clicksecondLevelMarker)
                         }
                     }
                     return res
@@ -241,9 +244,9 @@
         padding: 0 5px;
     }
 
-    .amap-marker {
+    /*.amap-marker {
         -moz-transform: rotate(0deg) translate(-50%, -50%) !important;
         -webkit-transform: rotate(0deg) translate(-50%, -50%) !important;
         transform: rotate(0deg) translate(-50%, -50%) !important;
-    }
+    }*/
 </style>
