@@ -6,19 +6,19 @@
                 <p>首页</p>
             </router-link>
             <li>
-                <a href="discount.html">
+                <a href="./discount.html">
                     <em></em>
                     <p>特惠</p>
                 </a>
             </li>
             <li>
-                <a href="news.html">
+                <a href="./news.html">
                     <em></em>
                     <p>快讯</p>
                 </a>
             </li>
             <li>
-                <a href="account-index.html">
+                <a href="./account-index.html">
                     <em></em>
                     <p>我的</p>
                 </a>

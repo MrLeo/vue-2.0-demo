@@ -9,19 +9,19 @@
             <div class="mainnav">
                 <em @click="resetSearchInfo"></em>
                 <dl @click="showSearchInfo('searchQuyu')">
-                    <dt>区域/地铁
+                    <dt>{{computedQuYu}}/{{selectedName.ditie}}
                     <div class="fr"></div>
                     </dt>
                     <dd></dd>
                 </dl>
                 <dl @click="showSearchInfo('searchType')">
-                    <dt>类型
+                    <dt>{{selectedName.type}}
                     <div class="fr"></div>
                     </dt>
                     <dd></dd>
                 </dl>
                 <dl @click="showSearchInfo('searchJiage')">
-                    <dt>价格
+                    <dt>{{selectedName.jiage}}
                     <div class="fr"></div>
                     </dt>
                     <dd></dd>
@@ -59,6 +59,12 @@
         data () {
             return {
                 currentSearchInfo: '',
+                selectedName: {
+                    quyu: "区域",
+                    ditie: "地铁",
+                    jiage: "价格",
+                    type: "类型"
+                },
                 selected: {
                     keyword: ''
                 }
@@ -78,7 +84,62 @@
                 } else {
                     return '地图'
                 }
-            }
+            },
+            computedQuYu(){
+                const _vm = this
+                let id = _vm.indexSearch.quyu
+                let title = "区域"
+                for (let item of _vm.$store.state.base.quYuList)
+                    if (item.id == id)
+                        title = item.t_name
+                return title
+            },
+            /*computedDiTie(){
+                const _vm = this
+                let id = _vm.indexSearch.ditie
+                let title = "地铁"
+                for (let item of _vm.$store.state.base.diTieList)
+                    if (item.id == id)
+                        title = item.t_name
+                return title
+            },
+            computedJiaGe(){
+                const _vm = this
+                let title = "价格"
+                switch (_vm.indexSearch.ditie.toString()) {
+                    case '15000':
+                        title = '1-1.5万'
+                        break
+                    case '25000':
+                        title = '1.5-2.5万'
+                        break
+                    case '35000':
+                        title = '2.5-3.5万'
+                        break
+                    case '50000':
+                        title = '3.5-5万'
+                        break
+                    case '65000':
+                        title = '5-6.5万'
+                        break
+                    case '80000':
+                        title = '6.5-8万'
+                        break
+                    case '80001':
+                        title = '8万以上'
+                        break
+                }
+                return title
+            },
+            computedType(){
+                const _vm = this
+                let id = _vm.indexSearch.type
+                let title = "类型"
+                for (let item of _vm.$store.state.base.typeList)
+                    if (item.id == id)
+                        title = item.t_name
+                return title
+            }*/
         },
         watch: {
             '$route' (to, from) {
@@ -109,12 +170,25 @@
                 }
             },
             showSearchInfo(type){
-                if (this.currentSearchInfo == '')
-                    this.currentSearchInfo = type
-                else if (this.currentSearchInfo != '' && this.currentSearchInfo != type)
-                    this.currentSearchInfo = type
+                const _vm = this
+                if (_vm.currentSearchInfo == '')
+                    _vm.currentSearchInfo = type
+                else if (_vm.currentSearchInfo != '' && _vm.currentSearchInfo != type)
+                    _vm.currentSearchInfo = type
                 else
-                    this.currentSearchInfo = ''
+                    _vm.currentSearchInfo = ''
+
+                _vm.$store.state.base.tempVm.$on('closeSerchInfo', function () {
+                    console.log('[Leo] => closeSerchInfo')
+                    _vm.currentSearchInfo = ''
+                })
+
+                _vm.$store.state.base.tempVm.$on('setSelectedName', function (info) {
+                    info.quyu ? _vm.selectedName.quyu = (info.quyu == '不限' ? '区域' : info.quyu) : ''
+                    info.ditie ? _vm.selectedName.ditie = (info.ditie == '不限' ? '地铁' : info.ditie) : ''
+                    info.type ? _vm.selectedName.type = (info.type == '不限' ? '类型' : info.type) : ''
+                    info.jiage ? _vm.selectedName.jiage = (info.jiage == '不限' ? '价格' : info.jiage) : ''
+                })
             },
             resetSearchInfo(){
                 //this.selected.keyword = ''
@@ -157,5 +231,13 @@
         width: 30px;
         height: 100%;
         background: url('../../static/images/index2.jpg') center / 50% no-repeat;
+    }
+
+    .mainnav > dl {
+        width: 24%;
+    }
+
+    .mainnav > dl:first-child {
+        width: 30%;
     }
 </style>

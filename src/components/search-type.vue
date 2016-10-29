@@ -8,9 +8,9 @@
         <div class="box">
             <div class="navlist2 no">
                 <ul>
-                    <li @click="selectType('')" :class="{hover:indexSearch.type==''}">不限</li>
+                    <li @click="selectType('','不限')" :class="{hover:indexSearch.type==''}">不限</li>
                     <li v-for="item in typeList"
-                        @click="selectType(item.id)"
+                        @click="selectType(item.id,item.t_name)"
                         :class="{hover:indexSearch.type==item.id}">
                         {{item.t_name}}
                     </li>
@@ -46,9 +46,11 @@
                 'setRoadList',
                 'setMapList'
             ]),
-            selectType(type){
+            selectType(type, title){
                 this.selected.type = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.$store.state.base.tempVm.$emit('closeSerchInfo')
+                this.$store.state.base.tempVm.$emit('setSelectedName', {type:title})
             }
         },
         created(){

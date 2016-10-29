@@ -32,7 +32,6 @@
                 deep: true,
                 handler: function (val, oldVal) {
                     const _vm = this
-                    console.log('[Leo]indexSearch has be change => ', JSON.stringify(val))
                     if (!val.empty) {
                         _vm.setSecondLevelMarker().then(res=> {
                             //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
@@ -64,7 +63,8 @@
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     console.log('[Leo]resetSearchInfo => ')
                     _vm.setFirstLevelMarker()
-                    _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                    _vm.map.setZoomAndCenter(8, [116.398075, 39.908149])
+                    //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                 })
 
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记

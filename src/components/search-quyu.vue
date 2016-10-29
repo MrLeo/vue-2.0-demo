@@ -15,25 +15,25 @@
                 </div>
                 <div class="right">
                     <ol v-show="leftQuery.quyu">
-                        <li @click="selectQuyu('')"
+                        <li @click="selectQuyu('','不限')"
                             :class="{hover:indexSearch.quyu==''}">
                             不限
                         </li>
                         <li v-for="item in baseInfo.quYuList"
                             :id="item.id"
-                            @click="selectQuyu(item.id)"
+                            @click="selectQuyu(item.id,item.t_name)"
                             :class="{hover:indexSearch.quyu==item.id}">
                             {{item.t_name}}
                         </li>
                     </ol>
                     <ol v-show="leftQuery.ditie">
-                        <li @click="selectDitie('')"
+                        <li @click="selectDitie('','不限')"
                             :class="{hover:indexSearch.ditie==''}">
                             不限
                         </li>
                         <li v-for="item in baseInfo.diTieList"
                             :id="item.id"
-                            @click="selectDitie(item.id)"
+                            @click="selectDitie(item.id,item.t_name)"
                             :class="{hover:indexSearch.ditie==item.id}">
                             {{item.t_name}}
                         </li>
@@ -79,14 +79,18 @@
                     this.leftQuery[query] = false
                 this.leftQuery[type] = true
             },
-            selectQuyu(type){
+            selectQuyu(type, title){
                 this.selected.quyu = type
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.$store.state.base.tempVm.$emit('closeSerchInfo')
+                this.$store.state.base.tempVm.$emit('setSelectedName', {quyu: title})
             },
-            selectDitie(type){
+            selectDitie(type, title){
                 this.selected.ditie = type
                 console.log('[Leo] => ', this.selected)
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+                this.$store.state.base.tempVm.$emit('closeSerchInfo')
+                this.$store.state.base.tempVm.$emit('setSelectedName', {ditie: title})
             }
         },
         created(){
