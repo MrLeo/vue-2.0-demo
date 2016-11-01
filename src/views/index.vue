@@ -95,51 +95,51 @@
                 return title
             },
             /*computedDiTie(){
-                const _vm = this
-                let id = _vm.indexSearch.ditie
-                let title = "地铁"
-                for (let item of _vm.$store.state.base.diTieList)
-                    if (item.id == id)
-                        title = item.t_name
-                return title
-            },
-            computedJiaGe(){
-                const _vm = this
-                let title = "价格"
-                switch (_vm.indexSearch.ditie.toString()) {
-                    case '15000':
-                        title = '1-1.5万'
-                        break
-                    case '25000':
-                        title = '1.5-2.5万'
-                        break
-                    case '35000':
-                        title = '2.5-3.5万'
-                        break
-                    case '50000':
-                        title = '3.5-5万'
-                        break
-                    case '65000':
-                        title = '5-6.5万'
-                        break
-                    case '80000':
-                        title = '6.5-8万'
-                        break
-                    case '80001':
-                        title = '8万以上'
-                        break
-                }
-                return title
-            },
-            computedType(){
-                const _vm = this
-                let id = _vm.indexSearch.type
-                let title = "类型"
-                for (let item of _vm.$store.state.base.typeList)
-                    if (item.id == id)
-                        title = item.t_name
-                return title
-            }*/
+             const _vm = this
+             let id = _vm.indexSearch.ditie
+             let title = "地铁"
+             for (let item of _vm.$store.state.base.diTieList)
+             if (item.id == id)
+             title = item.t_name
+             return title
+             },
+             computedJiaGe(){
+             const _vm = this
+             let title = "价格"
+             switch (_vm.indexSearch.ditie.toString()) {
+             case '15000':
+             title = '1-1.5万'
+             break
+             case '25000':
+             title = '1.5-2.5万'
+             break
+             case '35000':
+             title = '2.5-3.5万'
+             break
+             case '50000':
+             title = '3.5-5万'
+             break
+             case '65000':
+             title = '5-6.5万'
+             break
+             case '80000':
+             title = '6.5-8万'
+             break
+             case '80001':
+             title = '8万以上'
+             break
+             }
+             return title
+             },
+             computedType(){
+             const _vm = this
+             let id = _vm.indexSearch.type
+             let title = "类型"
+             for (let item of _vm.$store.state.base.typeList)
+             if (item.id == id)
+             title = item.t_name
+             return title
+             }*/
         },
         watch: {
             '$route' (to, from) {
@@ -226,18 +226,30 @@
         transition: all .5s cubic-bezier(.55, 0, .1, 1);
     }
 
+    .mainnav {
+        display: flex;
+    }
+
     .mainnav > em {
-        float: left;
-        width: 30px;
+        /*float: left;*/
+        width: 35px;
         height: 100%;
         background: url('../../static/images/index2.jpg') center / 50% no-repeat;
     }
 
     .mainnav > dl {
-        width: 24%;
+        flex: 1;
+        width: auto;
+        text-align: center;
     }
 
     .mainnav > dl:first-child {
         width: 30%;
+    }
+
+    .mainnav b {
+        width: 35px;
+        padding-right: 10px;
+        box-sizing: border-box;
     }
 </style>

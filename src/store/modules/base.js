@@ -17,7 +17,7 @@ const state = {
         huxing: '',//户型的id
         keyword: '',//关键字
         fujin: '',//5千米传1 10千米传2
-        dqzuobiao: ''//当前坐标 传当前的地理位置 119.11111,35.1111
+        dqzuobiao: ''//当前坐标 传当前的地理位置 116.398075, 39.908149
     },
     quYuList: [],
     diTieList: [],

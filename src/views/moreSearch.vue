@@ -76,6 +76,7 @@
 <script>
     import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
     import * as types from '../store/mutation-types'
+    import getLocation from '../utils/getLocation'
     export default{
         name: 'more-search',
         components: {},
@@ -87,7 +88,24 @@
                     tese: '',
                     huxing: '',
                     huanxian: '',
-                    fujin: ''
+                    fujin: '',
+                    dqzuobiao: ''
+                }
+            }
+        },
+        watch: {
+            '$route' (to, from) {
+                console.log('[Leo]route change from=> ', from)
+                console.log('[Leo]route change to => ', to)
+            },
+            "selected.fujin"(val, oldVal){
+                const _vm = this
+                console.log('[Leo]selected.fujin => ', val)
+                if (val && val != "") {
+                    getLocation().then(res=> {
+                        if (res && res.length > 1)
+                            _vm.selected.dqzuobiao = res.join(",")
+                    })
                 }
             }
         },
@@ -99,12 +117,6 @@
                 indexSearch: state=>state.base.indexSearch
             }),
             ...mapGetters({})
-        },
-        watch: {
-            '$route' (to, from) {
-                console.log('[Leo]route change from=> ', from)
-                console.log('[Leo]route change to => ', to)
-            }
         },
         methods: {
             ...mapMutations({
