@@ -47,6 +47,10 @@
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2",
-    "webpack-merge": "^0.14.1"
+    "webpack-merge": "^0.14.1",
+    "node-sass": "^3.8.0",
+    "sass-loader": "^4.0.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3"
   }
 }

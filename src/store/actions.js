@@ -6,6 +6,7 @@
 
 import * as types from './mutation-types'
 import api from './api'
+import Alert from '../components/alert'
 
 /**
  * 初始化首页查询条件数据
@@ -105,12 +106,13 @@ export const setRoadList = ({commit, state})=> {
         dqzuobiao: state.base.indexSearch.dqzuobiao || ''
     }
 
-    //获取二级覆盖物
+    //获取一级覆盖物
     return api.getRoad(info).then(res=> {
         if (res.returnCode == '00'){
             commit(types.SET_ROAD_LIST, res.list || [])
             return res.list
         }else {
+            Alert(res.messageInfo)
             console.warn('[Leo]getRoad no response => ', res.messageInfo)
             return []
         }
@@ -147,6 +149,7 @@ export const setMapList = ({commit, state})=> {
             commit(types.SET_MAP_LIST, res.list || [])
             return res.list
         }else {
+            Alert(res.messageInfo)
             console.warn('[Leo]getMap no response => ', res.messageInfo)
             return []
         }
