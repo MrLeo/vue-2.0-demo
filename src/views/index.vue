@@ -200,12 +200,9 @@
                 _vm.selectedName.type = "类型"
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, {'empty': true})
                 let maps = _vm.setRoadList()//获取初始一级覆盖物
-                maps.then(res
-            =>
-                {
+                maps.then(function (res) {
                     _vm.$store.state.base.tempVm.$emit('resetSearchInfo')
-                }
-            )
+                })
             }
         },
         created(){

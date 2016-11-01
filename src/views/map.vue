@@ -49,11 +49,19 @@
             },
             "indexSearch.type"(val, oldVal) {
                 const _vm = this
-                _vm.setFirstLevelMarker()
+                if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
+                    _vm.setSecondLevelMarker()
+                } else {
+                    _vm.setFirstLevelMarker()
+                }
             },
             "indexSearch.jiage"(val, oldVal) {
                 const _vm = this
-                _vm.setFirstLevelMarker()
+                if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
+                    _vm.setSecondLevelMarker()
+                } else {
+                    _vm.setFirstLevelMarker()
+                }
             }
         },
         methods: {
@@ -74,7 +82,6 @@
                 _vm.setFirstLevelMarker()
 
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
-                    console.log('[Leo]resetSearchInfo => ')
                     _vm.setFirstLevelMarker()
                     _vm.map.setZoomAndCenter(8, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
@@ -158,7 +165,7 @@
                             _vm.markers.push(marker)
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                             marker.on('click', function (e) {
-                                console.log('[Leo]marker => ', e.target.data.id, e.target.data.t_name)
+                                console.log('[Leo]click marker => ', e.target.data.id, e.target.data.t_name)
                                 _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
@@ -229,7 +236,7 @@
         width: 50px;
         height: 50px;
         border: 1px solid #fff;
-        background-color: red;
+        background-color: #fc6561;
         text-align: center;
         color: #fff;
         font-family: "Microsoft YaHei UI", "微软雅黑", Verdana, sans-serif;
