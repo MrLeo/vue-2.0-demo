@@ -143,9 +143,11 @@
         },
         watch: {
             '$route' (to, from) {
+                const _vm = this
                 console.debug('[Leo]$route \nfrom => ', from, ' \nto => ', to)
                 if (to.name == "index") {
                     router.push({path: 'map'}) //默认展示地图
+                    _vm.resetSearchInfo()
                 }
             },
             'selected.keyword'(){
@@ -179,7 +181,6 @@
                     _vm.currentSearchInfo = ''
 
                 _vm.$store.state.base.tempVm.$on('closeSerchInfo', function () {
-                    console.log('[Leo] => closeSerchInfo')
                     _vm.currentSearchInfo = ''
                 })
 
@@ -191,9 +192,20 @@
                 })
             },
             resetSearchInfo(){
+                const _vm = this
                 //this.selected.keyword = ''
+                _vm.selectedName.quyu = "区域"
+                _vm.selectedName.ditie = "地铁"
+                _vm.selectedName.jiage = "价格"
+                _vm.selectedName.type = "类型"
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, {'empty': true})
-                this.$store.state.base.tempVm.$emit('resetSearchInfo')
+                let maps = _vm.setRoadList()//获取初始一级覆盖物
+                maps.then(res
+            =>
+                {
+                    _vm.$store.state.base.tempVm.$emit('resetSearchInfo')
+                }
+            )
             }
         },
         created(){
@@ -219,6 +231,8 @@
         bottom: 60px;
         left: 0;
         right: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .serch-info {

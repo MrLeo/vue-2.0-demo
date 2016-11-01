@@ -6,7 +6,7 @@
 <template>
     <div id="search">
         <header>
-            <router-link class="left" to="/map">&nbsp;〈&nbsp;</router-link>
+            <router-link class="left" :to="from">&nbsp;〈&nbsp;</router-link>
             <h1>更多</h1>
             <div class="right"></div>
             <div class="clear"></div>
@@ -83,6 +83,7 @@
         props: [],
         data(){
             return {
+                from: '/map',
                 currentSearch: 'tese',
                 selected: {
                     tese: '',
@@ -106,6 +107,8 @@
                         if (res && res.length > 1)
                             _vm.selected.dqzuobiao = res.join(",")
                     })
+                } else {
+                    _vm.selected.dqzuobiao = ""
                 }
             }
         },
@@ -144,6 +147,11 @@
             _vm.selected.fujin = _vm.indexSearch.fujin
         },
         mounted(){
+        },
+        beforeRouteEnter (to, from, next){
+            next(_vm => {
+                _vm.from = from.path
+            })
         }
     }
 </script>

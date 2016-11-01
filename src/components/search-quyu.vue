@@ -87,7 +87,6 @@
             },
             selectDitie(type, title){
                 this.selected.ditie = type
-                console.log('[Leo] => ', this.selected)
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
                 this.$store.state.base.tempVm.$emit('closeSerchInfo')
                 this.$store.state.base.tempVm.$emit('setSelectedName', {ditie: title})

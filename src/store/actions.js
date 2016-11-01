@@ -164,6 +164,7 @@ export const setMapList = ({commit, state})=> {
  */
 export const setTypeJianSuo = ({commit, state})=> {
     const info = {
+        page: state.base.indexSearch.listPage || 1,
         sub: state.base.indexSearch.sub || '',
         quyu: state.base.indexSearch.quyu || '',
         ditie: state.base.indexSearch.ditie || '',
@@ -174,8 +175,7 @@ export const setTypeJianSuo = ({commit, state})=> {
         jushi: state.base.indexSearch.huxing || '',
         keyword: state.base.indexSearch.keyword || '',
         fujin: state.base.indexSearch.fujin || '',
-        dqzuobiao: state.base.indexSearch.dqzuobiao || '',
-        page: state.base.indexSearch.listPage || 1
+        dqzuobiao: state.base.indexSearch.dqzuobiao || ''
     }
 
     return api.getTypeJianSuo(info).then(res=> {

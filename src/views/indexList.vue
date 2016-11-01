@@ -32,11 +32,20 @@
         },
         computed: {
             ...mapState({
+                indexSearch: ({base})=>base.indexSearch,
                 typeJianSuo: state=>state.base.typeJianSuo
             }),
             ...mapGetters({})
         },
-        watch: {},
+        watch: {
+            "indexSearch.quyu": {
+                deep: true,
+                handler: function (val, oldVal) {
+                    const _vm = this
+                    _vm.setTypeJianSuo()
+                }
+            }
+        },
         methods: {
             ...mapMutations({}),
             ...mapActions([

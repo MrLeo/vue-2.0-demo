@@ -28,17 +28,32 @@
             })
         },
         watch: {
-            "indexSearch": {
+            "indexSearch.quyu": {
                 deep: true,
                 handler: function (val, oldVal) {
                     const _vm = this
-                    if (!val.empty) {
-                        _vm.setSecondLevelMarker().then(res=> {
-                            //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
-                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                        })
+                    if (val) {
+                        _vm.setSecondLevelMarker()
+                    } else {
+                        _vm.setFirstLevelMarker()
                     }
                 }
+            },
+            "indexSearch.ditie"(val, oldVal) {
+                const _vm = this
+                if (val) {
+                    _vm.setSecondLevelMarker()
+                } else {
+                    _vm.setFirstLevelMarker()
+                }
+            },
+            "indexSearch.type"(val, oldVal) {
+                const _vm = this
+                _vm.setFirstLevelMarker()
+            },
+            "indexSearch.jiage"(val, oldVal) {
+                const _vm = this
+                _vm.setFirstLevelMarker()
             }
         },
         methods: {
@@ -55,10 +70,8 @@
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
-                let maps = _vm.setRoadList()//获取初始一级覆盖物
-                maps.then(res=> {
-                    _vm.setFirstLevelMarker()
-                })
+
+                _vm.setFirstLevelMarker()
 
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     console.log('[Leo]resetSearchInfo => ')
@@ -70,7 +83,7 @@
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
                 var _onZoomEnd = function (e) {
                     console.log('[Leo]缩放级别 => ', _vm.map.getZoom())
-                    if (_vm.map.getZoom() >= 13) {
+                    if (_vm.map.getZoom() > 13) {
                         console.log('[Leo]缩放级别大于13 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
                         let curCenter = _vm.map.getCenter()
                         _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: [curCenter.lat, curCenter.lng].join(",")})
@@ -78,6 +91,8 @@
                             //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                         })
+                    } else {
+                        _vm.setFirstLevelMarker()
                     }
                 }
                 AMap.event.addListener(_vm.map, 'zoomend', _onZoomEnd);
@@ -123,40 +138,43 @@
                 // }
                 return marker
             },
+            //获取初始一级覆盖物
             setFirstLevelMarker(){
                 const _vm = this
                 //移除旧的marker
                 _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
                 _vm.markers = []
-                _vm.$store.state.base.roadList.filter(function (item) {
-                    if (item.zuobiao && item.zuobiao.length > 1) {
-                        let marker = _vm.createMarker({
-                            position: item.zuobiao.split(','),
-                            info: `<p>${item.t_name}</p><p>${item.count}</p>`,
-                            id: item.id
-                        }, 'map-marker')
-                        marker.data['id'] = item.id
-                        marker.data['t_name'] = item.t_name
-                        marker.data['dqzuobiao'] = item.zuobiao
-                        _vm.markers.push(marker)
-                        //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
-                        marker.on('click', function (e) {
-                            console.log('[Leo]marker => ', e.target.data.id, e.target.data.t_name)
-                            _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
-                            _vm.setSecondLevelMarker().then(res=> {
-                                //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
-                                _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                return _vm.setRoadList().then(res=> {
+                    _vm.$store.state.base.roadList.filter(function (item) {
+                        if (item.zuobiao && item.zuobiao.length > 1) {
+                            let marker = _vm.createMarker({
+                                position: item.zuobiao.split(','),
+                                info: `<p>${item.t_name}</p><p>${item.count}</p>`,
+                                id: item.id
+                            }, 'map-marker')
+                            marker.data['id'] = item.id
+                            marker.data['t_name'] = item.t_name
+                            marker.data['dqzuobiao'] = item.zuobiao
+                            _vm.markers.push(marker)
+                            //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                            marker.on('click', function (e) {
+                                console.log('[Leo]marker => ', e.target.data.id, e.target.data.t_name)
+                                _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
+                                _vm.setSecondLevelMarker().then(res=> {
+                                    //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                                    _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                                })
                             })
-                        })
-                    }
+                        }
+                    })
                 })
             },
+            //获取二级覆盖物
             setSecondLevelMarker(){
                 const _vm = this
                 //移除旧的marker
                 _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
                 _vm.markers = []
-
                 return _vm.setMapList().then(function (res) {
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {

@@ -89,16 +89,17 @@ const mutations = {
         Vue.set(state, 'mapList', list)
     },
     [types.SET_TYPE_JIAN_SUO](state, list){
-        if (!state.typeJianSuo.length) {//空数组直接复制
+        Vue.set(state, 'typeJianSuo', list)
+        /*if (!state.typeJianSuo.length) {//空数组直接复制
             Vue.set(state, 'typeJianSuo', list)
         } else {//有数据的数组去重复添加
             for (let item of list) {
-                if (state.online.users.hasOwnProperty(user)) {
+         if (state.typeJianSuo.hasOwnProperty(item)) {
                     console.log('[Leo]hasOwnProperty => ')
                     continue
                 }
                 let isHas = false
-                for (let stateItem of state.typeJianSuo.typeJianSuo) {
+         for (let stateItem of state.typeJianSuo) {
                     if (item.id == stateItem.id) {
                         console.log('[Leo]重复id被过滤 => ', item.id)
                         isHas = true
@@ -106,10 +107,10 @@ const mutations = {
                     }
                 }
                 if (!isHas) {
-                    state.typeJianSuo.typeJianSuo.push(item)
+         state.typeJianSuo.push(item)
                 }
             }
-        }
+         }*/
     },
     [types.SET_TESE_LIST](state, list){
         Vue.set(state, 'teseList', list)
