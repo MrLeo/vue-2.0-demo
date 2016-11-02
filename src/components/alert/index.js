@@ -25,14 +25,13 @@ let returnAnInstance = instance => {
 }
 
 let removeDom = event => {
-    console.log('[Leo] => transitionend', event)
+    console.log('[Leo] => 销毁提示窗')
     if (event.target.parentNode) {
         event.target.parentNode.removeChild(event.target)
     }
 }
 
 ToastConstructor.prototype.close = function () {
-    console.log('[Leo] => close')
     this.visible = false
     this.$el.addEventListener('transitionend', removeDom)
     this.closed = true
@@ -55,7 +54,6 @@ let Alert = (options = {}) => {
             console.log('[Leo] => ',instance.closed)
             if (instance.closed) return
             instance.close()
-            instance.onClose()
         }, duration)
     })
     return instance

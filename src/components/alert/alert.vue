@@ -4,7 +4,7 @@
 * Created with JetBrains WebStorm.
 */
 <template>
-    <transition name="l-alert-pop">
+    <transition name="l-alert-pop" >
         <div class="l-alert mask" v-show="visible">
             <section class="l-alert-content">
                 <div><p>{{message}}</p></div>
@@ -22,14 +22,11 @@
         name: 'alert',
         components: {},
         props: {
-            visible: {
-                default: false,
-                type: Boolean
-            },
             message: String
         },
         data(){
             return {
+                visible:false
             }
         },
         watch: {},
@@ -95,6 +92,9 @@
                 text-decoration: none;
                 color: #1192d4;
             }
+        }
+        &-pop-enter-active, &-pop-leave-active {
+            transition: opacity .3s
         }
         &-pop-enter, &-pop-leave-active {
             opacity: 0;
