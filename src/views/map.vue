@@ -16,7 +16,7 @@
                 map: null,//地图
                 markers: [],//覆盖物列表
                 markderLevel: 1,//当前覆盖物级别
-                fitView:false//是否是自适应调整的缩放级别
+                fitView: false//是否是自适应调整的缩放级别
             }
         },
         computed: {
@@ -95,8 +95,8 @@
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
                 var _onZoomEnd = function (e) {
                     console.log('[Leo]缩放级别 => ', _vm.map.getZoom())
-                    if(_vm.fitView){
-                        _vm.fitView=false
+                    if (_vm.fitView) {
+                        _vm.fitView = false
                         return
                     }
                     if (_vm.map.getZoom() > 13) {
@@ -191,7 +191,7 @@
                                 //设置二级覆盖物
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
-                                    _vm.fitView=true//标记为自适应缩放比例
+                                    _vm.fitView = true//标记为自适应缩放比例
                                     _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                                 })
                             })
@@ -258,13 +258,8 @@
 
     .map-marker,
     .map-marker__2 {
-        width: 50px;
-        height: 50px;
-        border: 1px solid #fff;
-        background-color: #fc6561;
-        text-align: center;
-        color: #fff;
-        font-family: "Microsoft YaHei UI", "微软雅黑", Verdana, sans-serif;
+        width: 45px;
+        height: 45px;
         overflow: hidden;
         display: -webkit-box;
         display: -webkit-flex;
@@ -279,6 +274,13 @@
         -webkit-box-direction: normal;
         -webkit-flex-direction: column;
         flex-direction: column;
+        border: 1px solid #fff;
+        background-color: #fc6561;
+        text-align: center;
+        color: #fff;
+        font-family: Arial, "Microsoft YaHei UI", "微软雅黑", Verdana, sans-serif;
+        font-size: 10px;
+        line-height: 13px;
     }
 
     .map-marker {
@@ -288,10 +290,11 @@
     .map-marker__2 {
         border-radius: 10px;
         width: auto;
+        height: auto;
         white-space: nowrap;
-        line-height: 20px;
-        height: 40px;
-        padding: 0 5px;
+        padding: 5px 10px 15px 10px;
+        border: none;
+        background: url("../assets/talk.png") center center / 100% 100% no-repeat;
     }
 
     /*.amap-marker {
