@@ -93,7 +93,6 @@ export default {
         //    info.dqzuobiao = res.join(",")
         return new Promise(function (resolve, reject) {
             $.post(host + 'type_jiansuoapi.php', info, res=>{
-                console.log('[Leo]api:getTypeJianSuo => ',res)
                 resolve(JSON.parse(res))
             })
         })
