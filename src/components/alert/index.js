@@ -50,8 +50,12 @@ let Alert = (options = {}) => {
     Vue.nextTick(function () {
         instance.visible = true
         instance.$el.removeEventListener('transitionend', removeDom)
+        instance.$watch('visible', function (val) {
+            if (!val)
+                instance.$el.addEventListener('transitionend', removeDom)
+        })
         instance.timer = setTimeout(function () {
-            console.log('[Leo] => ',instance.closed)
+            console.log('[Leo] => ', instance.closed)
             if (instance.closed) return
             instance.close()
         }, duration)
