@@ -5,11 +5,11 @@
 */
 <template>
     <transition name="l-alert-pop">
-        <div class="l-alert mask" v-show="show">
+        <div class="l-alert mask" v-show="visible">
             <section class="l-alert-content">
                 <div><p>{{message}}</p></div>
                 <footer class="l-alert-btns">
-                    <a class="l-alert-btns__submit" @click="close">确定</a>
+                    <a class="l-alert-btns__submit" @click="onClose">确定</a>
                 </footer>
             </section>
         </div>
@@ -22,8 +22,8 @@
         name: 'alert',
         components: {},
         props: {
-            show: {
-                default: true,
+            visible: {
+                default: false,
                 type: Boolean
             },
             message: String
@@ -38,9 +38,10 @@
             ...mapGetters({})
         },
         methods: {
-            close(){
+            onClose(){
                 const _vm = this
-                _vm.show = false
+                console.log('[Leo] => onClose')
+                _vm.visible = false
             }
         },
         created(){
@@ -95,7 +96,6 @@
                 color: #1192d4;
             }
         }
-
         &-pop-enter, &-pop-leave-active {
             opacity: 0;
         }

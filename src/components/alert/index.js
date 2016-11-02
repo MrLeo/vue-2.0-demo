@@ -25,12 +25,14 @@ let returnAnInstance = instance => {
 }
 
 let removeDom = event => {
+    console.log('[Leo] => transitionend', event)
     if (event.target.parentNode) {
         event.target.parentNode.removeChild(event.target)
     }
 }
 
 ToastConstructor.prototype.close = function () {
+    console.log('[Leo] => close')
     this.visible = false
     this.$el.addEventListener('transitionend', removeDom)
     this.closed = true
@@ -44,15 +46,16 @@ let Alert = (options = {}) => {
     instance.closed = false
     clearTimeout(instance.timer)
     instance.message = typeof options === 'string' ? options : options.message
-    instance.show = options.show || true
 
     document.body.appendChild(instance.$el)
     Vue.nextTick(function () {
         instance.visible = true
         instance.$el.removeEventListener('transitionend', removeDom)
         instance.timer = setTimeout(function () {
+            console.log('[Leo] => ',instance.closed)
             if (instance.closed) return
             instance.close()
+            instance.onClose()
         }, duration)
     })
     return instance

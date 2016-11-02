@@ -13,9 +13,10 @@
         name: 'map',
         data(){
             return {
-                map: null,
-                markers: [],
-                markderLevel: 1
+                map: null,//地图
+                markers: [],//覆盖物列表
+                markderLevel: 1,//当前覆盖物级别
+                fitView:false//是否是自适应调整的缩放级别
             }
         },
         computed: {
@@ -69,8 +70,10 @@
                 'setRoadList',
                 'setMapList'
             ]),
+            //初始化
             init(){
                 const _vm = this
+                //初始化地图控件
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
                     zoom: 8
@@ -79,8 +82,10 @@
                     _vm.map.addControl(new AMap.ToolBar())
                 })
 
+                //默认设置一级控件
                 _vm.setFirstLevelMarker()
 
+                //监听“重置检索条件”
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     _vm.setFirstLevelMarker()
                     _vm.map.setZoomAndCenter(8, [116.398075, 39.908149])
@@ -90,6 +95,10 @@
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
                 var _onZoomEnd = function (e) {
                     console.log('[Leo]缩放级别 => ', _vm.map.getZoom())
+                    if(_vm.fitView){
+                        _vm.fitView=false
+                        return
+                    }
                     if (_vm.map.getZoom() > 13) {
                         console.log('[Leo]缩放级别大于13 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
                         let curCenter = _vm.map.getCenter()
@@ -110,6 +119,7 @@
                  }, function (val) {
                  })*/
             },
+            //创建覆盖物
             createMarker(data, className = "map-marker", hide = false){
                 const _vm = this
                 //http://lbs.amap.com/api/javascript-api/guide/draw-on-map/marker-point/Marker多级展示的交互实现 + 绑定事件完成交互
@@ -145,30 +155,43 @@
                 // }
                 return marker
             },
-            //获取初始一级覆盖物
+            //获取一级覆盖物
             setFirstLevelMarker(){
                 const _vm = this
                 //移除旧的marker
-                _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
+                _vm.markers && _vm.map.remove(_vm.markers)
+                _vm.map.clearMap()
                 _vm.markers = []
+                //获取RoadList并返回promise
                 return _vm.setRoadList().then(res=> {
                     _vm.$store.state.base.roadList.filter(function (item) {
+                        //RoadList的坐标信息正确
                         if (item.zuobiao && item.zuobiao.length > 1) {
+                            //添加覆盖物
                             let marker = _vm.createMarker({
                                 position: item.zuobiao.split(','),
                                 info: `<p>${item.t_name}</p><p>${item.count}</p>`,
                                 id: item.id
                             }, 'map-marker')
+
+                            //为二级覆盖物准备的参数
                             marker.data['id'] = item.id
                             marker.data['t_name'] = item.t_name
                             marker.data['dqzuobiao'] = item.zuobiao
+
+                            //将当前覆盖物添加到覆盖物集合
                             _vm.markers.push(marker)
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+
+                            //为marker绑定点击事件
                             marker.on('click', function (e) {
                                 console.log('[Leo]click marker => ', e.target.data.id, e.target.data.t_name)
+                                //commit查询参数
                                 _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
+                                //设置二级覆盖物
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
+                                    _vm.fitView=true//标记为自适应缩放比例
                                     _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                                 })
                             })
@@ -180,8 +203,10 @@
             setSecondLevelMarker(){
                 const _vm = this
                 //移除旧的marker
-                _vm.markers && _vm.map.remove(_vm.markers) || _vm.map.clearMap()
+                _vm.markers && _vm.map.remove(_vm.markers)
+                _vm.map.clearMap()
                 _vm.markers = []
+                //获取MapList并返回promise
                 return _vm.setMapList().then(function (res) {
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
