@@ -3,6 +3,7 @@
 > A Vue.js 2.0 project
 >
 > [demo 预览地址：http://vue2-demo.xuebin.me/dist/](http://vue2-demo.xuebin.me/dist/)
+> 由于接口跨域，所以预览Demo的时候需加载数据要[Chrome跨域插件](https://chrome.google.com/webstore/detail/omcncfnpmcabckcddookmnajignpffnh)
 
 ## Build Setup
 
