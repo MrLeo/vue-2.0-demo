@@ -158,7 +158,8 @@
             ...mapActions([
                 'initIndexSearchCriteria',
                 'setRoadList',
-                'setMapList'
+                'setMapList',
+                'setTypeJianSuo'
             ]),
             changeList(){
                 const _vm = this
@@ -203,6 +204,7 @@
                 maps.then(function (res) {
                     _vm.$store.state.base.tempVm.$emit('resetSearchInfo')
                 })
+                _vm.setTypeJianSuo()
             }
         },
         created(){

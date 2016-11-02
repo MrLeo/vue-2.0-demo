@@ -15,9 +15,6 @@ let getAnInstance = () => {
         toastPool.splice(0, 1)
         return instance
     }
-    /*return new ToastConstructor({
-     el: document.createElement('div')
-     })*/
     return new ToastConstructor().$mount(document.createElement('div'))
 }
 
