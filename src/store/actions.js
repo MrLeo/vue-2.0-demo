@@ -182,10 +182,12 @@ export const setTypeJianSuo = ({commit, state})=> {
     }
 
     return api.getTypeJianSuo(info).then(res=> {
+        console.log('[Leo]setTypeJianSuo => ',res)
         if (res.returnCode == '00') {
             commit(types.SET_TYPE_JIAN_SUO, res.list || [])
             return res.list
         } else {
+            Alert(res.messageInfo)
             console.warn('[Leo]getTypeJianSuo no response => ', res.messageInfo)
             return []
         }

@@ -38,7 +38,7 @@
             ...mapGetters({})
         },
         watch: {
-            "indexSearch.quyu": {
+            "indexSearch": {
                 deep: true,
                 handler: function (val, oldVal) {
                     const _vm = this
