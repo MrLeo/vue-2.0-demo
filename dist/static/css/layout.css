@@ -21,7 +21,7 @@ header h1 input { border:0; width:100%; border-radius:5px; height:30px; backgrou
 .mainnav > em {
     float: left; /*width: 30px;*/
     height: 100%;
-    background: url(../images/index2.jpg) center / 50% no-repeat;
+    background: url(../images/index2.png) center / 50% no-repeat;
 }
 
 .mainnav > dl {
