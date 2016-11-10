@@ -77,6 +77,7 @@
     import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
     import * as types from '../store/mutation-types'
     import getLocation from '../utils/getLocation'
+    import Toast from '../components/toast'
     export default{
         name: 'more-search',
         components: {},
@@ -104,8 +105,14 @@
                 console.log('[Leo]selected.fujin => ', val)
                 if (val && val != "") {
                     getLocation().then(res=> {
-                        if (res && res.length > 1)
-                            _vm.selected.dqzuobiao = res.join(",")
+                        if (res && res.length > 1) _vm.selected.dqzuobiao = res.join(",")
+                    }).catch(e=> {
+                        console.log('[Leo] => ', e)
+                        Toast({
+                            message: '定位失败',
+                            position: 'bottom',
+                            duration: 3000
+                        })
                     })
                 } else {
                     _vm.selected.dqzuobiao = ""
@@ -149,7 +156,7 @@
         mounted(){
         },
         beforeRouteEnter (to, from, next){
-            next(_vm => {
+            next(_vm=> {
                 _vm.from = from.path
             })
         }

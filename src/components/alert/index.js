@@ -39,7 +39,7 @@ ToastConstructor.prototype.close = function () {
 }
 
 let Alert = (options = {}) => {
-    let duration = options.duration || 3000
+    let duration = options.duration || 5000
 
     let instance = getAnInstance()
     instance.closed = false
