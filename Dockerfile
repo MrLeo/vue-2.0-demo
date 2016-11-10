@@ -3,24 +3,13 @@ FROM node:0.12.7-wheezy
 MAINTAINER Leo "lxbin6819@vip.qq.com"
 
 #=>由于该项目生成是纯静态文件，我们需要 Nginx 来作为 Web 服务器。
-RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
-RUN echo "deb http://nginx.org/packages/mainline/debian/ wheezy nginx" >> /etc/apt/sources.list
-
-ENV NGINX_VERSION 1.7.12-1~wheezy
-
-RUN apt-get update && \
-    apt-get install -y ca-certificates nginx && \
-    rm -rf /var/lib/apt/lists/*
-
-# forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log
-RUN ln -sf /dev/stderr /var/log/nginx/error.log
+FROM nginx
 
 EXPOSE 80
 
 #=>进入项目目录
 WORKDIR /app
-COPY .* /app
+COPY . /app
 
 #=>构建项目，bower 默认不允许 Root 权限运行，所以要加入 --allow-root 参数
 RUN npm install --allow-root
