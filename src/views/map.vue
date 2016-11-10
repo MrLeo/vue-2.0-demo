@@ -16,7 +16,11 @@
                 map: null,//地图
                 markers: [],//覆盖物列表
                 markderLevel: 1,//当前覆盖物级别
-                fitView: false//是否是自适应调整的缩放级别
+                lockMarkderLevel: false,//锁定覆盖物级别
+                fitView: false,//是否是自适应调整的缩放级别
+                baseZoom: 11,//初始缩放级别
+                mutateZoom: 14,//改变缩放级别
+                fire: require('../assets/fire.png')//火焰图标
             }
         },
         computed: {
@@ -73,10 +77,11 @@
             //初始化
             init(){
                 const _vm = this
+
                 //初始化地图控件
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
-                    zoom: 11
+                    zoom: _vm.baseZoom
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
@@ -88,7 +93,7 @@
                 //监听“重置检索条件”
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     _vm.setFirstLevelMarker()
-                    _vm.map.setZoomAndCenter(8, [116.398075, 39.908149])
+                    _vm.map.setZoomAndCenter(_vm.baseZoom, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                 })
 
@@ -99,8 +104,11 @@
                         _vm.fitView = false
                         return
                     }
-                    if (_vm.map.getZoom() > 13) {
-                        console.log('[Leo]缩放级别大于13 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
+                    if (_vm.lockMarkderLevel) {
+                        return
+                    }
+                    if (_vm.map.getZoom() == _vm.mutateZoom) {
+                        console.log('[Leo]缩放级别等于14 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
                         let curCenter = _vm.map.getCenter()
                         _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: [curCenter.lat, curCenter.lng].join(",")})
                         _vm.setSecondLevelMarker().then(res=> {
@@ -162,6 +170,8 @@
                 _vm.markers && _vm.map.remove(_vm.markers)
                 _vm.map.clearMap()
                 _vm.markers = []
+                _vm.markderLevel = 1
+                _vm.lockMarkderLevel = false
                 //获取RoadList并返回promise
                 return _vm.setRoadList().then(res=> {
                     _vm.$store.state.base.roadList.filter(function (item) {
@@ -188,6 +198,7 @@
                                 console.log('[Leo]click marker => ', e.target.data.id, e.target.data.t_name)
                                 //commit查询参数
                                 _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
+                                _vm.lockMarkderLevel = true
                                 //设置二级覆盖物
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
@@ -206,12 +217,15 @@
                 _vm.markers && _vm.map.remove(_vm.markers)
                 _vm.map.clearMap()
                 _vm.markers = []
+                _vm.markderLevel = 2
                 //获取MapList并返回promise
                 return _vm.setMapList().then(function (res) {
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
+                            //二级覆盖物样式
                             let info = `
-                                <img src="${require('../assets/fire.png')}" class="fire" ${item.renzheng == 1 && 'style="display: inherit;"'}>
+                                <img class="fire" src="${_vm.fire}"
+                                    ${item.renzheng.toString() == "1" ? "style=\"display: inherit;\"" : ""}>
                                 <div>
                                     <p>${item.p_name}</p>
                                     <p>${item['jiage']}</p>
