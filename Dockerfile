@@ -11,7 +11,7 @@ RUN npm install
 RUN npm run build
 
 #=>由于该项目生成是纯静态文件，我们需要 Nginx 来作为 Web 服务器。
-FROM nginx
+RUN apt-get install -y nginx
 
 EXPOSE 80
 
