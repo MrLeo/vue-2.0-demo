@@ -2,7 +2,6 @@
 FROM node:0.12.7-wheezy
 MAINTAINER Leo "lxbin6819@vip.qq.com"
 
-RUN apt-get install npm
 RUN npm install
 RUN npm run build
 
