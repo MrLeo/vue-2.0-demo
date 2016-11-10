@@ -247,7 +247,6 @@
         /*float: left;*/
         width: 35px;
         height: 100%;
-        background: url('../../static/images/index2.jpg') center / 50% no-repeat;
     }
 
     .mainnav > dl {
