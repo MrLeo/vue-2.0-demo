@@ -1,12 +1,13 @@
 #=>选择官方的 node 镜像作为项目的基础镜像
-FROM node:4.2.2
+FROM node:6.2.2
 
 MAINTAINER Leo "lxbin6819@vip.qq.com"
 
+#=>由于该项目生成是纯静态文件，我们需要 Nginx 来作为 Web 服务器
 RUN apt-key adv --keyserver pgp.mit.edu --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ wheezy nginx" >> /etc/apt/sources.list
 
-ENV NGINX_VERSION 1.7.12-1~wheezy
+ENV NGINX_VERSION 1.11.4
 
 RUN apt-get update && \
     apt-get install -y ca-certificates nginx && \
