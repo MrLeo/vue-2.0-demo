@@ -2,8 +2,6 @@
 FROM node:0.12.7-wheezy
 MAINTAINER Leo "lxbin6819@vip.qq.com"
 
-RUN apt-get install npm
-
 #=>由于该项目生成是纯静态文件，我们需要 Nginx 来作为 Web 服务器。
 FROM nginx
 
