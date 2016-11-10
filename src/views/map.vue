@@ -76,7 +76,7 @@
                 //初始化地图控件
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
-                    zoom: 8
+                    zoom: 11
                 })
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
@@ -210,9 +210,16 @@
                 return _vm.setMapList().then(function (res) {
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
+                            let info = `
+                                <img src="${require('../assets/fire.png')}" class="fire" ${item.renzheng == 1 && 'style="display: inherit;"'}>
+                                <div>
+                                    <p>${item.p_name}</p>
+                                    <p>${item['jiage']}</p>
+                                </div>
+                            `
                             let marker = _vm.createMarker({
                                 position: item.zuobiao.split(','),
-                                info: `<p>${item.p_name}</p><p>${item['jiage']}</p>`
+                                info
                             }, 'map-marker__2')
 
                             //详情页面需要的参数
@@ -270,10 +277,10 @@
         -webkit-box-align: center;
         -webkit-align-items: center;
         align-items: center;
-        -webkit-box-orient: vertical;
+        -webkit-box-orient: horizontal;
         -webkit-box-direction: normal;
-        -webkit-flex-direction: column;
-        flex-direction: column;
+        -webkit-flex-direction: row;
+        flex-direction: row;
         border: 1px solid #fff;
         background-color: #fc6561;
         text-align: center;
@@ -285,6 +292,10 @@
 
     .map-marker {
         border-radius: 50%;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        flex-direction: column;
     }
 
     .map-marker__2 {
@@ -295,6 +306,12 @@
         padding: 5px 10px 15px 10px;
         border: none;
         background: url("../assets/talk.png") center center / 100% 100% no-repeat;
+    }
+
+    .map-marker .fire,
+    .map-marker__2 .fire {
+        display: none;
+        width: 25px;
     }
 
     /*.amap-marker {
