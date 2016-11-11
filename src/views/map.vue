@@ -18,7 +18,7 @@
                 markderLevel: 1,//当前覆盖物级别
                 lockMarkderLevel: false,//锁定覆盖物级别
                 fitView: false,//是否是自适应调整的缩放级别
-                baseZoom: 11,//初始缩放级别
+                baseZoom: 10,//初始缩放级别
                 mutateZoom: 14,//改变缩放级别
                 fire: require('../assets/fire.png')//火焰图标
             }
@@ -296,7 +296,7 @@
         -webkit-flex-direction: row;
         flex-direction: row;
         border: 1px solid #fff;
-        background-color: #fc6561;
+        background-color: #fc4a46;
         text-align: center;
         color: #fff;
         font-family: Arial, "Microsoft YaHei UI", "微软雅黑", Verdana, sans-serif;
@@ -333,4 +333,22 @@
         -webkit-transform: rotate(0deg) translate(-50%, -50%) !important;
         transform: rotate(0deg) translate(-50%, -50%) !important;
     }*/
+
+    .amap-touch-toolbar .amap-zoomcontrol {
+        right: 0px;
+        bottom: -90px;
+        width: 30px;
+    }
+
+    .amap-zoom-touch-minus, .amap-zoom-touch-plus {
+        height: 35px;
+    }
+
+    .amap-zoom-touch-minus > div, .amap-zoom-touch-plus > div {
+        line-height: 35px;
+    }
+
+    .amap-touch-toolbar .amap-zoomcontrol:after {
+        top: 38px;
+    }
 </style>
