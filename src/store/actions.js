@@ -31,11 +31,11 @@ export const initIndexSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_QUYU_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('区域 ' + res.messageInfo)
             console.warn('[Leo]getQuYuList no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('区域 ' + error)
         console.warn('[Leo]getQuYuList error => ', error)
     })
     //地铁
@@ -43,11 +43,11 @@ export const initIndexSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_DITIE_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('地铁 ' + res.messageInfo)
             console.log('[Leo]getDiTieList no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('地铁 ' + error)
         console.warn('[Leo]getDiTieList error => ', error)
     })
     //类型
@@ -55,11 +55,11 @@ export const initIndexSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_TYPE_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('类型 ' + res.messageInfo)
             console.log('[Leo]getTypeList no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('类型 ' + error)
         console.warn('[Leo]getTypeList error => ', error)
     })
 }
@@ -76,11 +76,11 @@ export const initMoreSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_TESE_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('特色 ' + res.messageInfo)
             console.warn('[Leo]getTeSeList no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('特色 ' + error)
         console.error('[Leo]getTeSeList error => ', error)
     })
     //户型
@@ -88,11 +88,11 @@ export const initMoreSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_HUXING_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('户型 ' + res.messageInfo)
             console.warn('[Leo]getHuXing no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('户型 ' + error)
         console.error('[Leo]getHuXing error => ', error)
     })
     //环线
@@ -100,11 +100,11 @@ export const initMoreSearchCriteria = ({commit, state}, info)=> {
         if (res.returnCode == '00')
             commit(types.SET_HUANXIAN_LIST, res.list || [])
         else {
-            Toast(res.messageInfo)
+            Toast('环线 ' + res.messageInfo)
             console.warn('[Leo]getHuanXianList no response => ', res.messageInfo)
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('环线 ' + error)
         console.error('[Leo]getHuanXianList error => ', error)
     })
 }
@@ -141,7 +141,7 @@ export const setRoadList = ({commit, state})=> {
             return []
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('地图区域列表 ' + error)
         console.error('[Leo]getRoad error => ', error)
         return error
     })
@@ -179,7 +179,7 @@ export const setMapList = ({commit, state})=> {
             return []
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('地图项目列表 ' + error)
         console.error('[Leo]getMap error => ', error)
         return error
     })
@@ -218,7 +218,7 @@ export const setTypeJianSuo = ({commit, state})=> {
             return []
         }
     }).catch(error=> {
-        Toast(error)
+        Toast('项目列表 ' + error)
         console.error('[Leo]getTypeJianSuo error => ', error)
         return error
     })
