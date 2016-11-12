@@ -11,6 +11,12 @@ import getLocation from '../utils/getLocation'
 
 const host = 'http://loushijie.cn/api/'
 
+//window.jQuery = $
+//import '../assets/jquery.ajax-cross-origin.min'
+//$.ajaxSetup({
+//    crossOrigin: true
+//})
+
 export default {
     /**
      * 1.区域
@@ -20,7 +26,7 @@ export default {
         return new Promise(function (resolve, reject) {
             $.post(host + 'quyu_listapi.php', {sub}, res=> resolve(JSON.parse(res)))
         })
-        //return Fetch(host + 'quyu_listapi.php?sub=' + sub)
+        //return Fetch(host + 'quyu_listapi.php', {sub},{mode:'cors'})
     },
     /**
      * 2.地铁
@@ -92,7 +98,7 @@ export default {
         //return position.then(res=> {
         //    info.dqzuobiao = res.join(",")
         return new Promise(function (resolve, reject) {
-            $.post(host + 'type_jiansuoapi.php', info, res=>{
+            $.post(host + 'type_jiansuoapi.php', info, res=> {
                 resolve(JSON.parse(res))
             })
         })

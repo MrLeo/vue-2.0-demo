@@ -18,8 +18,10 @@
                 markderLevel: 1,//当前覆盖物级别
                 lockMarkderLevel: false,//锁定覆盖物级别
                 fitView: false,//是否是自适应调整的缩放级别
-                baseZoom: 10,//初始缩放级别
-                mutateZoom: 14,//改变缩放级别
+                tagZoom: 8.5,//标记缩放级别
+                curZoom: 8.5,//当前缩放级别
+                baseZoom: 8.5,//初始缩放级别
+                mutateZoom: 12,//改变缩放级别
                 fire: require('../assets/fire.png')//火焰图标
             }
         },
@@ -92,6 +94,8 @@
 
                 //监听“重置检索条件”
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
+                    _vm.tagZoom = 8.5
+                    _vm.curZoom = 8.5
                     _vm.setFirstLevelMarker()
                     _vm.map.setZoomAndCenter(_vm.baseZoom, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
@@ -99,7 +103,8 @@
 
                 //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
                 var _onZoomEnd = function (e) {
-                    console.log('[Leo]缩放级别 => ', _vm.map.getZoom())
+                    let tempZoom = _vm.curZoom
+                    _vm.curZoom = _vm.map.getZoom()
                     if (_vm.fitView) {
                         _vm.fitView = false
                         return
@@ -107,17 +112,44 @@
                     if (_vm.lockMarkderLevel) {
                         return
                     }
-                    if (_vm.map.getZoom() == _vm.mutateZoom) {
-                        console.log('[Leo]缩放级别等于14 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
+
+                    /**
+                     * 1.圆圈==》点击区域，出现项目 自适应
+                     * 2.圆圈==》点击区域，记录一下这个层级①,出现项目,
+                     *      项目缩小=》回到圆圈 是根据手势 ，只要缩放一下 就回到8.5级别 圆圈状态
+                     * 3.圆圈==》点击区域,出现项目,
+                     *      项目放大=》就一直放大就行 ，再缩小的时候 只有缩小到层级①的时候，手势再缩小 才回圆圈。
+                     * 4.圆圈，一直放大，层级12时出现项目。
+                     */
+
+                    /**
+                     * 地图缩放触发覆盖物级别改变：
+                     *      1.显示二级覆盖物
+                     *          如果：地图缩放级别到达“变更缩放”的级别
+                     *      2.显示一级覆盖物
+                     *          如果：缩放级别达到“缩放标识”的级别;
+                     *          并且,当前覆盖物级别是二级;
+                     *          并且,点击的是缩小地图（当前级别小于前一级别）
+                     */
+                    if (_vm.curZoom <= _vm.tagZoom && _vm.markderLevel == 2 && tempZoom > _vm.curZoom) {
+                        _vm.setFirstLevelMarker()
+                    }
+                    if (_vm.curZoom == _vm.mutateZoom) {
+                        console.warn('[Leo]显示二级覆盖物 => 中心点坐标 => ', JSON.stringify(_vm.map.getCenter()))
+                        _vm.tagZoom = _vm.map.getZoom()
                         let curCenter = _vm.map.getCenter()
                         _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: [curCenter.lat, curCenter.lng].join(",")})
                         _vm.setSecondLevelMarker().then(res=> {
                             //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                         })
-                    } else {
-                        _vm.setFirstLevelMarker()
                     }
+                    console.group('地图缩放')
+                    console.log('[Leo]前一个缩放级别 => ', tempZoom)
+                    console.log('[Leo]当前的缩放级别 => ', _vm.curZoom)
+                    console.log('[Leo]缩放标识 => ', _vm.tagZoom)
+                    console.log('[Leo]当前覆盖物级别 => ', _vm.markderLevel)
+                    console.groupEnd()
                 }
                 AMap.event.addListener(_vm.map, 'zoomend', _onZoomEnd);
 
@@ -196,9 +228,10 @@
                             //为marker绑定点击事件
                             marker.on('click', function (e) {
                                 console.log('[Leo]click marker => ', e.target.data.id, e.target.data.t_name)
+                                _vm.tagZoom = _vm.map.getZoom()
                                 //commit查询参数
                                 _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
-                                _vm.lockMarkderLevel = true
+                                //_vm.lockMarkderLevel = true
                                 //设置二级覆盖物
                                 _vm.setSecondLevelMarker().then(res=> {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))

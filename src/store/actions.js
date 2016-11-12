@@ -17,6 +17,7 @@ import Alert from '../components/alert'
 export const initIndexSearchCriteria = ({commit, state}, info)=> {
     //区域
     api.getQuYuList(info || '').then(res=> {
+        console.log('[Leo] => ',res)
         if (res.returnCode == '00')
             commit(types.SET_QUYU_LIST, res.list || [])
         else
