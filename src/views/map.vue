@@ -16,7 +16,6 @@
                 map: null,//地图
                 markers: [],//覆盖物列表
                 markderLevel: 1,//当前覆盖物级别
-                lockMarkderLevel: false,//锁定覆盖物级别
                 fitView: false,//是否是自适应调整的缩放级别
                 tagZoom: 8.5,//标记缩放级别
                 curZoom: 8.5,//当前缩放级别
@@ -27,7 +26,7 @@
         },
         computed: {
             ...mapState({
-                indexSearch: state=>state.base.indexSearch
+                indexSearch: state => state.base.indexSearch
                 //mapList: state => state.base.mapList,
             }),
             ...mapGetters({
@@ -49,7 +48,11 @@
             "indexSearch.ditie"(val, oldVal) {
                 const _vm = this
                 if (val) {
-                    _vm.setSecondLevelMarker()
+                    _vm.setSecondLevelMarker().then(()=>{
+                        _vm.tagZoom = 8.5
+                        _vm.fitView = true
+                        _vm.map.setFitView(_vm.markers)
+                    })
                 } else {
                     _vm.setFirstLevelMarker()
                 }
@@ -57,7 +60,11 @@
             "indexSearch.type"(val, oldVal) {
                 const _vm = this
                 if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
-                    _vm.setSecondLevelMarker()
+                    _vm.setSecondLevelMarker().then(()=>{
+                        _vm.tagZoom = 8.5
+                        _vm.fitView = true
+                        _vm.map.setFitView(_vm.markers)
+                    })
                 } else {
                     _vm.setFirstLevelMarker()
                 }
@@ -65,7 +72,11 @@
             "indexSearch.jiage"(val, oldVal) {
                 const _vm = this
                 if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
-                    _vm.setSecondLevelMarker()
+                    _vm.setSecondLevelMarker().then(()=>{
+                        _vm.tagZoom = 8.5
+                        _vm.fitView = true
+                        _vm.map.setFitView(_vm.markers)
+                    })
                 } else {
                     _vm.setFirstLevelMarker()
                 }
@@ -80,7 +91,9 @@
             init(){
                 const _vm = this
 
-                //初始化地图控件
+                /**
+                 * 初始化地图控件
+                 */
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
                     zoom: _vm.baseZoom
@@ -89,19 +102,52 @@
                     _vm.map.addControl(new AMap.ToolBar())
                 })
 
-                //默认设置一级控件
-                _vm.setFirstLevelMarker()
+                /**
+                 * 用于返回
+                 * 如果有区域ID则直接进入区域
+                 */
+                let sub = _vm.$route.query.sub || ''
+                let page = _vm.$route.query.page || ''
+                let quyu = _vm.$route.query.quyu || ''
+                let ditie = _vm.$route.query.ditie || ''
+                let huanxian = _vm.$route.query.huanxian || ''
+                let type = _vm.$route.query.type || ''
+                let jiage = _vm.$route.query.jiage || ''
+                let tese = _vm.$route.query.tese || ''
+                let huxing = _vm.$route.query.huxing || ''
+                let keyword = _vm.$route.query.keyword || ''
+                let fujin = _vm.$route.query.fujin || ''
+                let dqzuobiao = _vm.$route.query.dqzuobiao || ''
+                if (!!sub || !!page || !!quyu || !!ditie || !!huanxian || !!type || !!jiage || !!tese || !!huxing || !!keyword || !!fujin || !!dqzuobiao) {
+                    //commit查询参数
+                    _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {
+                        sub, page, quyu, ditie, huanxian, type, jiage, tese, huxing, keyword, fujin, dqzuobiao
+                    })
+                    _vm.setSecondLevelMarker().then(res => {
+                        _vm.fitView = true//标记为自适应缩放比例
+                        _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
+                    })
+                } else {
+                    _vm.setFirstLevelMarker().then(() => {
+                        _vm.map.setFitView(_vm.markers)
+                    })
+                }
 
-                //监听“重置检索条件”
+                /**
+                 * 监听“重置检索条件”
+                 */
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     _vm.tagZoom = 8.5
                     _vm.curZoom = 8.5
+                    _vm.$router.push({name: 'map'})
                     _vm.setFirstLevelMarker()
                     _vm.map.setZoomAndCenter(_vm.baseZoom, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                 })
 
-                //为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
+                /**
+                 * 为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
+                 */
                 var _onZoomEnd = function (e) {
                     let tempZoom = _vm.curZoom
                     _vm.curZoom = _vm.map.getZoom()
@@ -109,18 +155,6 @@
                         _vm.fitView = false
                         return
                     }
-                    if (_vm.lockMarkderLevel) {
-                        return
-                    }
-
-                    /**
-                     * 1.圆圈==》点击区域，出现项目 自适应
-                     * 2.圆圈==》点击区域，记录一下这个层级①,出现项目,
-                     *      项目缩小=》回到圆圈 是根据手势 ，只要缩放一下 就回到8.5级别 圆圈状态
-                     * 3.圆圈==》点击区域,出现项目,
-                     *      项目放大=》就一直放大就行 ，再缩小的时候 只有缩小到层级①的时候，手势再缩小 才回圆圈。
-                     * 4.圆圈，一直放大，层级12时出现项目。
-                     */
 
                     /**
                      * 地图缩放触发覆盖物级别改变：
@@ -128,10 +162,13 @@
                      *          如果：地图缩放级别到达“变更缩放”的级别
                      *      2.显示一级覆盖物
                      *          如果：缩放级别达到“缩放标识”的级别;
-                     *          并且,当前覆盖物级别是二级;
-                     *          并且,点击的是缩小地图（当前级别小于前一级别）
+                     *              或者，缩放级别是初始缩放级别；
+                     *              并且,当前覆盖物级别是二级;
+                     *              并且,点击的是缩小地图（当前级别小于前一级别）
                      */
-                    if (_vm.curZoom <= _vm.tagZoom && _vm.markderLevel == 2 && tempZoom > _vm.curZoom) {
+                    if ((_vm.tagZoom == _vm.baseZoom || _vm.curZoom <= _vm.tagZoom)
+                        && _vm.markderLevel == 2
+                        && tempZoom > _vm.curZoom) {
                         _vm.setFirstLevelMarker()
                     }
                     if (_vm.curZoom == _vm.mutateZoom) {
@@ -139,7 +176,7 @@
                         _vm.tagZoom = _vm.map.getZoom()
                         let curCenter = _vm.map.getCenter()
                         _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {dqzuobiao: [curCenter.lat, curCenter.lng].join(",")})
-                        _vm.setSecondLevelMarker().then(res=> {
+                        _vm.setSecondLevelMarker().then(res => {
                             //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                         })
@@ -203,9 +240,8 @@
                 _vm.map.clearMap()
                 _vm.markers = []
                 _vm.markderLevel = 1
-                _vm.lockMarkderLevel = false
                 //获取RoadList并返回promise
-                return _vm.setRoadList().then(res=> {
+                return _vm.setRoadList().then(res => {
                     _vm.$store.state.base.roadList.filter(function (item) {
                         //RoadList的坐标信息正确
                         if (item.zuobiao && item.zuobiao.length > 1) {
@@ -226,14 +262,13 @@
                             //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
 
                             //为marker绑定点击事件
-                            marker.on('click', function (e) {
+                            marker.on('click', (e) => {
                                 console.log('[Leo]click marker => ', e.target.data.id, e.target.data.t_name)
                                 _vm.tagZoom = _vm.map.getZoom()
                                 //commit查询参数
                                 _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu: e.target.data.id})
-                                //_vm.lockMarkderLevel = true
                                 //设置二级覆盖物
-                                _vm.setSecondLevelMarker().then(res=> {
+                                _vm.setSecondLevelMarker().then(res => {
                                     //_vm.map.setZoomAndCenter(14, e.target.data.dqzuobiao.split(','))
                                     _vm.fitView = true//标记为自适应缩放比例
                                     _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
@@ -285,6 +320,13 @@
                 })
             },
             clicksecondLevelMarker(e){
+
+                //Url参数记录点击的区域ID
+                this.$router.push({
+                    name: 'map',
+                    query: this.indexSearch
+                })
+
                 let data = e.target.data
                 console.log('[Leo]点击二级覆盖物 => 进入详情页 => ', data)
                 window.localStorage.setItem('detailTitle', data['name'])
@@ -369,19 +411,19 @@
 
     .amap-touch-toolbar .amap-zoomcontrol {
         right: 0px;
-        bottom: -90px;
-        width: 30px;
+        bottom: -100px;
+        width: 25px;
     }
 
     .amap-zoom-touch-minus, .amap-zoom-touch-plus {
-        height: 35px;
+        height: 30px;
     }
 
     .amap-zoom-touch-minus > div, .amap-zoom-touch-plus > div {
-        line-height: 35px;
+        line-height: 30px;
     }
 
     .amap-touch-toolbar .amap-zoomcontrol:after {
-        top: 38px;
+        top: 34px;
     }
 </style>

@@ -73,7 +73,8 @@
         computed: {
             ...mapState({
                 //quYuList: state => state.base.quYuList
-                indexSearch: state=>state.base.indexSearch
+                base: state => state.base,
+                indexSearch: state => state.base.indexSearch
             }),
             ...mapGetters({
                 //baseInfo: 'baseInfo'
@@ -152,6 +153,45 @@
             },
             'selected.keyword'(){
                 this.$store.commit(types.SET_INDEX_SEARCH_INFO, this.selected)
+            },
+            "base.quYuList": {
+                deep: true,
+                handler: function (val, oldVal) {
+                    const _vm = this
+                    let quYuList = _vm.$store.state.base.quYuList
+                    for (let item of quYuList) {
+                        if (item.id == _vm.$store.state.base.indexSearch.quyu) {
+                            _vm.selectedName.quyu = item.t_name
+                            return
+                        }
+                    }
+                }
+            },
+            "base.diTieList": {
+                deep: true,
+                handler: function (val, oldVal) {
+                    const _vm = this
+                    let diTieList = _vm.$store.state.base.diTieList
+                    for (let item of diTieList) {
+                        if (item.id == _vm.$store.state.base.indexSearch.ditie) {
+                            _vm.selectedName.ditie = item.t_name
+                            return
+                        }
+                    }
+                }
+            },
+            "base.typeList": {
+                deep: true,
+                handler: function (val, oldVal) {
+                    const _vm = this
+                    let typeList = _vm.$store.state.base.typeList
+                    for (let item of typeList) {
+                        if (item.id == _vm.$store.state.base.indexSearch.type) {
+                            _vm.selectedName.type = item.t_name
+                            return
+                        }
+                    }
+                }
             }
         },
         methods: {
@@ -209,15 +249,63 @@
         },
         created(){
             const _vm = this
-
             //初始化判断本地 是否为空
             var subjectColor = window.localStorage.getItem('subjectColor');
-            subjectColor && $('header').addClass(subjectColor)
-
-            _vm.selected.keyword = _vm.$store.state.base.indexSearch.keyword
+            if (subjectColor) {
+                $('header').addClass(subjectColor)
+            }
 
             //初始化检索信息的数据
             _vm.initIndexSearchCriteria()
+
+            //初始化URL参数
+            let sub = _vm.$route.query.sub || ''
+            let page = _vm.$route.query.page || ''
+            let quyu = _vm.$route.query.quyu || ''
+            let ditie = _vm.$route.query.ditie || ''
+            let huanxian = _vm.$route.query.huanxian || ''
+            let type = _vm.$route.query.type || ''
+            let jiage = _vm.$route.query.jiage || ''
+            let tese = _vm.$route.query.tese || ''
+            let huxing = _vm.$route.query.huxing || ''
+            let keyword = _vm.$route.query.keyword || ''
+            let fujin = _vm.$route.query.fujin || ''
+            let dqzuobiao = _vm.$route.query.dqzuobiao || ''
+            _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {
+                sub, page, quyu, ditie, huanxian, type, jiage, tese, huxing, keyword, fujin, dqzuobiao
+            })
+            _vm.selected.keyword = _vm.$store.state.base.indexSearch.keyword
+
+            //设置价格检索项的标题
+            let selectJiage = (jiage) => {
+                switch (jiage) {
+                    case '15000':
+                        _vm.selectedName.jiage = '1-1.5万'
+                        break
+                    case '25000':
+                        _vm.selectedName.jiage = '1.5-2.5万'
+                        break
+                    case '35000':
+                        _vm.selectedName.jiage = '2.5-3.5万'
+                        break
+                    case '50000':
+                        _vm.selectedName.jiage = '3.5-5万'
+                        break
+                    case '65000':
+                        _vm.selectedName.jiage = '5-6.5万'
+                        break
+                    case '80000':
+                        _vm.selectedName.jiage = '6.5-8万'
+                        break
+                    case '80001':
+                        _vm.selectedName.jiage = '8万以上'
+                        break
+                    default:
+                        _vm.selectedName.jiage = '价格'
+                        break
+                }
+            }
+            selectJiage(_vm.$store.state.base.indexSearch.jiage)
         }
     }
 </script>
@@ -263,5 +351,14 @@
         width: 35px;
         padding-right: 10px;
         box-sizing: border-box;
+    }
+
+    .mainnav > dl dt .fr {
+        right: 4px;
+    }
+
+    .mainnav > dl dt {
+        padding-right: 15px;
+        white-space: nowrap;
     }
 </style>

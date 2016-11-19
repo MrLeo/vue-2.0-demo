@@ -7,16 +7,12 @@
 import Alert from '../components/alert'
 import Toast from '../components/toast'
 import * as types from './mutation-types'
-import sameOriginApi from './api'
-import crossOriginApi from './crossOriginApi'
 
-const url = window.location.href
-let api
-if (/^https?:\/\/loushijie.cn.*/.test(url)) {
-    api = sameOriginApi
-} else {
-    api = crossOriginApi
-}
+import api from './api'
+
+//if (!/^https?:\/\/loushijie.cn.*/.test(window.location.href)) {
+//    api = require('./crossOriginApi')
+//}
 
 /**
  * 初始化首页查询条件数据
@@ -24,41 +20,40 @@ if (/^https?:\/\/loushijie.cn.*/.test(url)) {
  * @param state
  * @param info
  */
-export const initIndexSearchCriteria = ({commit, state}, info)=> {
+export const initIndexSearchCriteria = ({commit, state}, info) => {
     //区域
-    api.getQuYuList(info || '').then(res=> {
-        console.log('[Leo] => ', res)
+    api.getQuYuList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_QUYU_LIST, res.list || [])
         else {
             Toast('区域 ' + res.messageInfo)
             console.warn('[Leo]getQuYuList no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('区域 ' + error)
         console.warn('[Leo]getQuYuList error => ', error)
     })
     //地铁
-    api.getDiTieList(info || '').then(res=> {
+    api.getDiTieList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_DITIE_LIST, res.list || [])
         else {
             Toast('地铁 ' + res.messageInfo)
             console.log('[Leo]getDiTieList no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('地铁 ' + error)
         console.warn('[Leo]getDiTieList error => ', error)
     })
     //类型
-    api.getTypeList(info || '').then(res=> {
+    api.getTypeList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_TYPE_LIST, res.list || [])
         else {
             Toast('类型 ' + res.messageInfo)
             console.log('[Leo]getTypeList no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('类型 ' + error)
         console.warn('[Leo]getTypeList error => ', error)
     })
@@ -70,40 +65,40 @@ export const initIndexSearchCriteria = ({commit, state}, info)=> {
  * @param state
  * @param info
  */
-export const initMoreSearchCriteria = ({commit, state}, info)=> {
+export const initMoreSearchCriteria = ({commit, state}, info) => {
     //特色
-    api.getTeSeList(info || '').then(res=> {
+    api.getTeSeList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_TESE_LIST, res.list || [])
         else {
             Toast('特色 ' + res.messageInfo)
             console.warn('[Leo]getTeSeList no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('特色 ' + error)
         console.error('[Leo]getTeSeList error => ', error)
     })
     //户型
-    api.getHuXingList(info || '').then(res=> {
+    api.getHuXingList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_HUXING_LIST, res.list || [])
         else {
             Toast('户型 ' + res.messageInfo)
             console.warn('[Leo]getHuXing no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('户型 ' + error)
         console.error('[Leo]getHuXing error => ', error)
     })
     //环线
-    api.getHuanXianList(info || '').then(res=> {
+    api.getHuanXianList(info || '').then(res => {
         if (res.returnCode == '00')
             commit(types.SET_HUANXIAN_LIST, res.list || [])
         else {
             Toast('环线 ' + res.messageInfo)
             console.warn('[Leo]getHuanXianList no response => ', res.messageInfo)
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('环线 ' + error)
         console.error('[Leo]getHuanXianList error => ', error)
     })
@@ -115,7 +110,7 @@ export const initMoreSearchCriteria = ({commit, state}, info)=> {
  * @param state
  * @param info
  */
-export const setRoadList = ({commit, state})=> {
+export const setRoadList = ({commit, state}) => {
     const info = {
         sub: state.base.indexSearch.sub || '',
         quyu: state.base.indexSearch.quyu || '',
@@ -131,7 +126,7 @@ export const setRoadList = ({commit, state})=> {
     }
 
     //获取一级覆盖物
-    return api.getRoad(info).then(res=> {
+    return api.getRoad(info).then(res => {
         if (res.returnCode == '00') {
             commit(types.SET_ROAD_LIST, res.list || [])
             return res.list
@@ -140,7 +135,7 @@ export const setRoadList = ({commit, state})=> {
             console.warn('[Leo]getRoad no response => ', res.messageInfo)
             return []
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('地图区域列表 ' + error)
         console.error('[Leo]getRoad error => ', error)
         return error
@@ -153,7 +148,7 @@ export const setRoadList = ({commit, state})=> {
  * @param state
  * @param info
  */
-export const setMapList = ({commit, state})=> {
+export const setMapList = ({commit, state}) => {
     const info = {
         sub: state.base.indexSearch.sub || '',
         quyu: state.base.indexSearch.quyu || '',
@@ -169,7 +164,7 @@ export const setMapList = ({commit, state})=> {
     }
 
     //获取二级覆盖物
-    return api.getMap(info).then(res=> {
+    return api.getMap(info).then(res => {
         if (res.returnCode == '00') {
             commit(types.SET_MAP_LIST, res.list || [])
             return res.list
@@ -178,7 +173,7 @@ export const setMapList = ({commit, state})=> {
             console.warn('[Leo]getMap no response => ', res.messageInfo)
             return []
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('地图项目列表 ' + error)
         console.error('[Leo]getMap error => ', error)
         return error
@@ -191,7 +186,7 @@ export const setMapList = ({commit, state})=> {
  * @param state
  * @param info
  */
-export const setTypeJianSuo = ({commit, state})=> {
+export const setTypeJianSuo = ({commit, state}) => {
     const info = {
         page: state.base.indexSearch.listPage || 1,
         sub: state.base.indexSearch.sub || '',
@@ -207,8 +202,7 @@ export const setTypeJianSuo = ({commit, state})=> {
         dqzuobiao: state.base.indexSearch.dqzuobiao || ''
     }
 
-    return api.getTypeJianSuo(info).then(res=> {
-        console.log('[Leo]setTypeJianSuo => ', res)
+    return api.getTypeJianSuo(info).then(res => {
         if (res.returnCode == '00') {
             commit(types.SET_TYPE_JIAN_SUO, res.list || [])
             return res.list
@@ -217,7 +211,7 @@ export const setTypeJianSuo = ({commit, state})=> {
             console.warn('[Leo]getTypeJianSuo no response => ', res.messageInfo)
             return []
         }
-    }).catch(error=> {
+    }).catch(error => {
         Toast('项目列表 ' + error)
         console.error('[Leo]getTypeJianSuo error => ', error)
         return error

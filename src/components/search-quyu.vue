@@ -94,6 +94,7 @@
         },
         created(){
             const _vm = this
+            console.log('[Leo] => ',_vm.indexSearch.quyu)
             _vm.selected.quyu = _vm.indexSearch.quyu
             _vm.selected.ditie = _vm.indexSearch.ditie
         }
