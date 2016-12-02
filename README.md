@@ -2,7 +2,7 @@
 
 > A Vue.js 2.0 project
 >
-> [demo 预览地址：http://vue2-demo.xuebin.me/dist/](http://vue2-demo.xuebin.me/dist/)
+> [demo 预览地址：http://vue-2.0-demo.xuebin.me/dist/](http://vue-2.0-demo.xuebin.me/dist/)
 > 由于接口跨域，所以预览Demo的时候需加载数据要[Chrome跨域插件](https://chrome.google.com/webstore/detail/omcncfnpmcabckcddookmnajignpffnh)
 
 ## Build Setup
@@ -62,5 +62,5 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 - [vue样式表css组件化-cssobj](https://github.com/cssobj/cssobj)
 
 
-> **更多内容:** 
+> **更多内容:**
 > [https://github.com/jsfront/src/blob/master/vuejs.md](https://github.com/jsfront/src/blob/master/vuejs.md)
