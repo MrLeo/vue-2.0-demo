@@ -129,7 +129,7 @@
                     })
                 } else {
                     _vm.setFirstLevelMarker().then(() => {
-                        _vm.map.setFitView(_vm.markers)
+                        //_vm.map.setFitView(_vm.markers)
                     })
                 }
 
@@ -235,13 +235,15 @@
             //获取一级覆盖物
             setFirstLevelMarker(){
                 const _vm = this
-                //移除旧的marker
-                _vm.markers && _vm.map.remove(_vm.markers)
-                _vm.map.clearMap()
-                _vm.markers = []
-                _vm.markderLevel = 1
                 //获取RoadList并返回promise
                 return _vm.setRoadList().then(res => {
+                    //移除旧的marker
+                    _vm.markers && _vm.map.remove(_vm.markers)
+                    _vm.map.clearMap()
+                    _vm.markers = []
+                    _vm.markderLevel = 1
+
+                    //添加新的marker
                     _vm.$store.state.base.roadList.filter(function (item) {
                         //RoadList的坐标信息正确
                         if (item.zuobiao && item.zuobiao.length > 1) {
@@ -281,13 +283,14 @@
             //获取二级覆盖物
             setSecondLevelMarker(){
                 const _vm = this
-                //移除旧的marker
-                _vm.markers && _vm.map.remove(_vm.markers)
-                _vm.map.clearMap()
-                _vm.markers = []
-                _vm.markderLevel = 2
                 //获取MapList并返回promise
                 return _vm.setMapList().then(function (res) {
+                    //移除旧的marker
+                    _vm.markers && _vm.map.remove(_vm.markers)
+                    _vm.map.clearMap()
+                    _vm.markers = []
+                    _vm.markderLevel = 2
+
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
                             //二级覆盖物样式
