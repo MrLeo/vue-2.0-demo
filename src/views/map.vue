@@ -48,7 +48,7 @@
             "indexSearch.ditie"(val, oldVal) {
                 const _vm = this
                 if (val) {
-                    _vm.setSecondLevelMarker().then(()=>{
+                    _vm.setSecondLevelMarker().then(() => {
                         _vm.tagZoom = 8.5
                         _vm.fitView = true
                         _vm.map.setFitView(_vm.markers)
@@ -60,7 +60,7 @@
             "indexSearch.type"(val, oldVal) {
                 const _vm = this
                 if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
-                    _vm.setSecondLevelMarker().then(()=>{
+                    _vm.setSecondLevelMarker().then(() => {
                         _vm.tagZoom = 8.5
                         _vm.fitView = true
                         _vm.map.setFitView(_vm.markers)
@@ -72,7 +72,7 @@
             "indexSearch.jiage"(val, oldVal) {
                 const _vm = this
                 if (_vm.indexSearch.quyu || _vm.indexSearch.ditie) {
-                    _vm.setSecondLevelMarker().then(()=>{
+                    _vm.setSecondLevelMarker().then(() => {
                         _vm.tagZoom = 8.5
                         _vm.fitView = true
                         _vm.map.setFitView(_vm.markers)
@@ -91,9 +91,7 @@
             init(){
                 const _vm = this
 
-                /**
-                 * 初始化地图控件
-                 */
+                //region 初始化地图控件
                 _vm.map = new AMap.Map('map', {
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
                     zoom: _vm.baseZoom
@@ -101,11 +99,9 @@
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
+                //endregion
 
-                /**
-                 * 用于返回
-                 * 如果有区域ID则直接进入区域
-                 */
+                //region 浏览器返回处理
                 let sub = _vm.$route.query.sub || ''
                 let page = _vm.$route.query.page || ''
                 let quyu = _vm.$route.query.quyu || ''
@@ -132,10 +128,9 @@
                         //_vm.map.setFitView(_vm.markers)
                     })
                 }
+                //endregion
 
-                /**
-                 * 监听“重置检索条件”
-                 */
+                //region 监听“重置检索条件”
                 _vm.$store.state.base.tempVm.$on('resetSearchInfo', function () {
                     _vm.tagZoom = 8.5
                     _vm.curZoom = 8.5
@@ -144,10 +139,9 @@
                     _vm.map.setZoomAndCenter(_vm.baseZoom, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                 })
+                //endregion
 
-                /**
-                 * 为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
-                 */
+                //region 为地图绑定一个zoomend事件，当地图缩放结束后停留的级别小于8的时候将溢出所有市一级的标记
                 var _onZoomEnd = function (e) {
                     let tempZoom = _vm.curZoom
                     _vm.curZoom = _vm.map.getZoom()
@@ -189,12 +183,14 @@
                     console.groupEnd()
                 }
                 AMap.event.addListener(_vm.map, 'zoomend', _onZoomEnd);
+                //endregion
 
-                //使用监听，因为后面查询条件改变后需要重新渲染
+                //region 使用监听，因为后面查询条件改变后需要重新渲染
                 /* _vm.$store.watch(function (state) {
                  return state.base.mapList
                  }, function (val) {
                  })*/
+                //endregion
             },
             //创建覆盖物
             createMarker(data, className = "map-marker", hide = false){
@@ -237,13 +233,13 @@
                 const _vm = this
                 //获取RoadList并返回promise
                 return _vm.setRoadList().then(res => {
-                    //移除旧的marker
+                    //region 移除旧的marker
                     _vm.markers && _vm.map.remove(_vm.markers)
                     _vm.map.clearMap()
                     _vm.markers = []
                     _vm.markderLevel = 1
+                    //endregion
 
-                    //添加新的marker
                     _vm.$store.state.base.roadList.filter(function (item) {
                         //RoadList的坐标信息正确
                         if (item.zuobiao && item.zuobiao.length > 1) {
@@ -285,11 +281,12 @@
                 const _vm = this
                 //获取MapList并返回promise
                 return _vm.setMapList().then(function (res) {
-                    //移除旧的marker
+                    //region 移除旧的marker
                     _vm.markers && _vm.map.remove(_vm.markers)
                     _vm.map.clearMap()
                     _vm.markers = []
                     _vm.markderLevel = 2
+                    //endregion
 
                     for (let item of res) {
                         if (item.zuobiao && item.zuobiao.length > 1) {
