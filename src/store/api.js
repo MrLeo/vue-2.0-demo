@@ -98,8 +98,10 @@ export default {
         //return position.then(res=> {
         //    info.dqzuobiao = res.join(",")
         return new Promise(function (resolve, reject) {
-            $.post(host + 'type_jiansuoapi.php', info, res=> {
+
+          $.post(host + 'type_jiansuoapi.php', info, res=> {
                 resolve(JSON.parse(res))
+
             })
         })
         //})

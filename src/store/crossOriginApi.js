@@ -153,6 +153,7 @@ export default {
                 crossOrigin: true,
                 url: host + 'type_jiansuoapi.php?' + parseParam(info),
                 success: (data)=>resolve(JSON.parse(data))
+
             })
         })
         //})

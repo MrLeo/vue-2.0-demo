@@ -1,20 +1,20 @@
 
 body{ font-family:"华文细黑", "微软雅黑", "黑体"}
 
-header{ background:#fc6561; color:#fff; font-size:14px; position:relative; line-height:52px; position:fixed; top:0; left:0; right:0; z-index:9; height:52px;}
+header{ background:#fc6561; color:#fff; font-size:14px; position:relative; line-height:40px; position:fixed; top:0; left:0; right:0; z-index:9; height:40px;}
 header .left,header .right { position:absolute; top:0}
 header .left { left:5px;}
 header .right { right:5px;}
-header h1{ padding:0 50px; height:52px; overflow:hidden; font-size:16px; font-weight:bold; text-align:center}
-header h1 input { border:0; width:100%; border-radius:5px; height:30px; background:#fff url(../images/index1.jpg) no-repeat right; text-indent:10px; background-size:30px;}
+header h1{ padding:0 50px; height:40px; overflow:hidden; font-size:16px; font-weight:bold; text-align:center}
+header h1 input { border:0; width:100%; border-radius:5px; height:25px; background:#fff url(../images/index1.jpg) no-repeat right; text-indent:10px; background-size:30px;margin-bottom: 3px}
 
 .mainnav {
-    height: 40px;
+    height: 35px;
     background: #f4f2f3;
     border-bottom: 1px solid #ddd;
     color: #333;
     font-size: 12px;
-    line-height: 40px;
+    line-height: 35px;
     overflow: hidden;
 }
 
@@ -43,17 +43,17 @@ header h1 input { border:0; width:100%; border-radius:5px; height:30px; backgrou
 .indexlist dd>em { position:absolute; top:30px; right:10px; font-size:16px; color:#fb4a46; font-weight:bold;}
 
 
-.mainmenu{ position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid #e2e2e2; box-shadow:0 0 5px #e2e2e2; font-size:12px;}
-.mainmenu ul li { float:left; width:25%; text-align:center; height:60px;}
-.mainmenu ul li em { display:inline-block; width:32px; height:32px; margin-top:5px; background:url(../images/tab_home_0.png); background-size:100%;}
+.mainmenu{ position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid #e2e2e2; box-shadow:0 0 5px #e2e2e2; font-size:12px; z-index: 999;}
+.mainmenu ul li { float:left; width:25%; text-align:center; height:50px;}
+.mainmenu ul li em { display:inline-block; width:32px; height:32px; margin-top:3px; background:url(../images/tab_home_0.png); background-size:100%;}
 .mainmenu ul li:nth-child(2) em { background-image:url(../images/tab_tehui_0.png)}
 .mainmenu ul li:nth-child(3) em { background-image: url(../images/tab_kuaixun_0.png)}
 .mainmenu ul li:nth-child(4) em { background-image: url(../images/tab_me_0.png)}
-.mainmenu ul li:nth-child(1).hover em { display:inline-block; width:32px; height:32px; margin-top:5px; background:url(../images/tab_home.png); background-size:100%;}
+.mainmenu ul li:nth-child(1).hover em { display:inline-block; width:32px; height:32px; margin-top:3px; background:url(../images/tab_home.png); background-size:100%;}
 .mainmenu ul li:nth-child(2).hover em { background-image:url(../images/tab_tehui.png)}
 .mainmenu ul li:nth-child(3).hover em { background-image: url(../images/tab_kuaixun.png)}
 .mainmenu ul li:nth-child(4).hover em { background-image: url(../images/tab_me.png)}
-.mainmenu ul li.hover a{ color:#fb4a46}
+.mainmenu ul li.hover a{ color:#666}
 
 
 
@@ -120,7 +120,7 @@ header h1 input { border:0; width:100%; border-radius:5px; height:30px; backgrou
 .member ol li input[type="image"]{ width:60px; height:60px; border-radius:50%; margin:10px 0;}
 
 
-.mianlayer1{ position:fixed; top:92px; bottom:60px; left:0; right:0; background:rgba(0,0,0,.2); z-index:0}
+.mianlayer1{ position:fixed; top:77px; bottom:60px; left:0; right:0; background:rgba(0,0,0,.2); z-index:0}
 .mianlayer1 .box{ background:#fff; height:300px; }
 
 .navlist1 { position:relative;}

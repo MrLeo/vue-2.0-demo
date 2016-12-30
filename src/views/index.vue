@@ -1,48 +1,48 @@
 <template>
-    <div id="index">
-        <header>
-            <div class="left">北京</div>
-            <h1><input type="text" placeholder="搜索楼盘" v-model="selected.keyword"></h1>
-            <div></div>
-            <div class="right" @click="changeList">{{indexListType}}</div>
-            <div class="clear"></div>
-            <div class="mainnav">
-                <em @click="resetSearchInfo"></em>
-                <dl @click="showSearchInfo('searchQuyu')">
-                    <dt>{{computedQuYu}}/{{selectedName.ditie}}
-                    <div class="fr"></div>
-                    </dt>
-                    <dd></dd>
-                </dl>
-                <dl @click="showSearchInfo('searchType')">
-                    <dt>{{selectedName.type}}
-                    <div class="fr"></div>
-                    </dt>
-                    <dd></dd>
-                </dl>
-                <dl @click="showSearchInfo('searchJiage')">
-                    <dt>{{selectedName.jiage}}
-                    <div class="fr"></div>
-                    </dt>
-                    <dd></dd>
-                </dl>
-                <router-link tag="b" to="/search/more">更多</router-link>
-            </div>
-        </header>
-        <div style=" height:92px;"></div>
-        <div class="content">
-            <transition name="fade" mode="out-in">
-                <keep-alive>
-                    <router-view></router-view>
-                </keep-alive>
-            </transition>
-        </div>
-        <div style="height:60px;"></div>
-        <v-footer></v-footer>
-        <transition name="slide-down">
-            <component :is="currentSearchInfo" class="serch-info"></component>
-        </transition>
+  <div id="index">
+    <header>
+      <div class="left">北京</div>
+      <h1><input type="text" placeholder="搜索楼盘" v-model="selected.keyword"></h1>
+      <div></div>
+      <div class="right" @click="changeList">{{indexListType}}</div>
+      <div class="clear"></div>
+      <div class="mainnav">
+        <em @click="resetSearchInfo"></em>
+        <dl @click="showSearchInfo('searchQuyu')">
+          <dt>{{computedQuYu}}/{{selectedName.ditie}}
+          <div class="fr"></div>
+          </dt>
+          <dd></dd>
+        </dl>
+        <dl @click="showSearchInfo('searchType')">
+          <dt>{{selectedName.type}}
+          <div class="fr"></div>
+          </dt>
+          <dd></dd>
+        </dl>
+        <dl @click="showSearchInfo('searchJiage')">
+          <dt>{{selectedName.jiage}}
+          <div class="fr"></div>
+          </dt>
+          <dd></dd>
+        </dl>
+        <router-link tag="b" to="/search/more">更多</router-link>
+      </div>
+    </header>
+    <div style=" height:92px;"></div>
+    <div class="content">
+      <transition name="fade" mode="out-in">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
     </div>
+    <div style="height:60px;"></div>
+    <v-footer></v-footer>
+    <transition name="slide-down">
+      <component :is="currentSearchInfo" class="serch-info"></component>
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -248,6 +248,7 @@
             }
         },
         created(){
+
             const _vm = this
             //初始化判断本地 是否为空
             var subjectColor = window.localStorage.getItem('subjectColor');
@@ -259,22 +260,22 @@
             _vm.initIndexSearchCriteria()
 
             //初始化URL参数
-            let sub = _vm.$route.query.sub || ''
-            let page = _vm.$route.query.page || ''
-            let quyu = _vm.$route.query.quyu || ''
-            let ditie = _vm.$route.query.ditie || ''
-            let huanxian = _vm.$route.query.huanxian || ''
-            let type = _vm.$route.query.type || ''
-            let jiage = _vm.$route.query.jiage || ''
-            let tese = _vm.$route.query.tese || ''
-            let huxing = _vm.$route.query.huxing || ''
-            let keyword = _vm.$route.query.keyword || ''
-            let fujin = _vm.$route.query.fujin || ''
-            let dqzuobiao = _vm.$route.query.dqzuobiao || ''
-            _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {
-                sub, page, quyu, ditie, huanxian, type, jiage, tese, huxing, keyword, fujin, dqzuobiao
-            })
-            _vm.selected.keyword = _vm.$store.state.base.indexSearch.keyword
+          //  let sub = _vm.$route.query.sub || ''
+          //  let page = _vm.$route.query.page || ''
+          //  let quyu = _vm.$route.query.quyu || ''
+          //  let ditie = _vm.$route.query.ditie || ''
+          //  let huanxian = _vm.$route.query.huanxian || ''
+          //  let type = _vm.$route.query.type || ''
+          //  let jiage = _vm.$route.query.jiage || ''
+          //  let tese = _vm.$route.query.tese || ''
+          //  let huxing = _vm.$route.query.huxing || ''
+          //  let keyword = _vm.$route.query.keyword || ''
+          //  let fujin = _vm.$route.query.fujin || ''
+          //  let dqzuobiao = _vm.$route.query.dqzuobiao || ''
+          //  _vm.$store.commit(types.SET_INDEX_SEARCH_INFO, {
+          //      sub, page, quyu, ditie, huanxian, type, jiage, tese, huxing, keyword, fujin, dqzuobiao
+          //  })
+          //  _vm.selected.keyword = _vm.$store.state.base.indexSearch.keyword
 
             //设置价格检索项的标题
             let selectJiage = (jiage) => {
@@ -308,14 +309,15 @@
             selectJiage(_vm.$store.state.base.indexSearch.jiage)
         }
     }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .content {
         position: absolute;
-        top: 92px;
-        bottom: 60px;
+        top: 77px;
+        bottom: 50px;
         left: 0;
         right: 0;
         overflow-y: auto;
@@ -361,4 +363,5 @@
         padding-right: 15px;
         white-space: nowrap;
     }
+
 </style>

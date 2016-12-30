@@ -4,7 +4,7 @@
 * Created with JetBrains WebStorm.
 */
 <template>
-    <div id="map"></div>
+  <div id="map"></div>
 </template>
 <script>
     import {mapState, mapGetters, mapActions} from 'vuex'
@@ -42,6 +42,7 @@
                         _vm.setSecondLevelMarker()
                     } else {
                         _vm.setFirstLevelMarker()
+                        console.log("quyu");
                     }
                 }
             },
@@ -55,6 +56,7 @@
                     })
                 } else {
                     _vm.setFirstLevelMarker()
+                    console.log("ditie");
                 }
             },
             "indexSearch.type"(val, oldVal) {
@@ -67,6 +69,7 @@
                     })
                 } else {
                     _vm.setFirstLevelMarker()
+                    console.log("type");
                 }
             },
             "indexSearch.jiage"(val, oldVal) {
@@ -79,7 +82,12 @@
                     })
                 } else {
                     _vm.setFirstLevelMarker()
+                    console.log("jiage");
                 }
+            },
+            "indexSearch.keyword"(val, oldVal) {
+                const _vm = this
+                _vm.setFirstLevelMarker()
             }
         },
         methods: {
@@ -96,11 +104,26 @@
                     center: [116.398075, 39.908149],//[39.911940136336277, 116.40602523623816],
                     zoom: _vm.baseZoom
                 })
+
                 _vm.map.plugin(["AMap.ToolBar"], function () {
                     _vm.map.addControl(new AMap.ToolBar())
                 })
+                _vm.map.plugin(["AMap.Geolocation"], function () {
+                     _vm.map.addControl(new AMap.Geolocation({
+                        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                        timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                        maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                        convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                        showButton: true,        //显示定位按钮，默认：true
+                        buttonPosition: 'LB',    //定位按钮停靠位置，默认：'LB'，左下角
+                        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                        showMarker: true,        //定位成功后在定位到的位置显示点标记，默认：true
+                        showCircle: true,        //定位成功后用圆圈表示定位精度范围，默认：true
+                        panToLocation: false,     //定位成功后将定位到的位置作为地图中心点，默认：true
+                        zoomToAccuracy:false      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+                    }))
+                })
                 //endregion
-
                 //region 浏览器返回处理
                 let sub = _vm.$route.query.sub || ''
                 let page = _vm.$route.query.page || ''
@@ -124,8 +147,11 @@
                         _vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
                     })
                 } else {
+                //选好更多搜索条件后将区域条件和搜索框条件置空
+                this.$store.commit(types.SET_INDEX_SEARCH_INFO, {quyu:'',keyword:''})
                     _vm.setFirstLevelMarker().then(() => {
                         //_vm.map.setFitView(_vm.markers)
+                        console.log("浏览器返回");
                     })
                 }
                 //endregion
@@ -135,6 +161,7 @@
                     _vm.tagZoom = 8.5
                     _vm.curZoom = 8.5
                     _vm.$router.push({name: 'map'})
+                    console.log("重置检索条件");
                     _vm.setFirstLevelMarker()
                     _vm.map.setZoomAndCenter(_vm.baseZoom, [116.398075, 39.908149])
                     //_vm.map.setFitView(_vm.markers)//地图调整到合适的范围来显示我们需要展示的markers。
@@ -163,6 +190,7 @@
                     if ((_vm.tagZoom == _vm.baseZoom || _vm.curZoom <= _vm.tagZoom)
                         && _vm.markderLevel == 2
                         && tempZoom > _vm.curZoom) {
+                         console.log("地图级别改变");
                         _vm.setFirstLevelMarker()
                     }
                     if (_vm.curZoom == _vm.mutateZoom) {
@@ -332,6 +360,7 @@
                 window.localStorage.setItem('detailTitle', data['name'])
                 window.localStorage.setItem('detailTel', data['tel'])
                 window.localStorage.setItem('detailXY', data['zuobian'])
+                window.localStorage.setItem('detailPrice', data['jiage'])
                 //window.location.href = 'h5/view/product_info.php?id=' + data['id']
                 window.location.href = 'detail_product.html?id=' + data['id']
             }
@@ -345,6 +374,11 @@
             })
         }
     }
+
+
+
+
+
 </script>
 <style>
     #map {
@@ -426,4 +460,9 @@
     .amap-touch-toolbar .amap-zoomcontrol:after {
         top: 34px;
     }
+
+
+
+
+
 </style>
